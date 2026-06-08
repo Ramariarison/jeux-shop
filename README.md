@@ -43,14 +43,6 @@ src/app/globals.css
 
 ## 3. Installation des composants Shadcn UI
 
-Tentative initiale :
-
-```bash
-npx shadcn@latest add button card input label badge table dialog toast select
-```
-
-Le composant `toast` étant déprécié, utilisation de `sonner` à la place :
-
 ```bash
 npx shadcn@latest add card input label badge table dialog select sonner
 ```
@@ -67,16 +59,6 @@ src/components/ui/select.tsx
 src/components/ui/sonner.tsx
 src/components/ui/dialog.tsx
 ```
-
-### Composant ignoré
-
-```text
-src/components/ui/button.tsx
-```
-
-(car déjà créé lors de l'initialisation)
-
----
 
 ## 4. Installation des dépendances utilitaires
 
@@ -97,14 +79,6 @@ npm install lucide-react clsx date-fns
 ## 5. Création du fichier d'environnement
 
 La commande :
-
-```bash
-echo. > .env.local
-```
-
-n'a pas fonctionné sous PowerShell.
-
-Création du fichier avec :
 
 ```powershell
 New-Item .env.local
