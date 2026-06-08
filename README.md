@@ -98,19 +98,3 @@ Ce fichier servira à stocker les variables d'environnement du projet :
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
-
----
-
-## État actuel du projet
-
-✅ Supabase installé
-
-✅ Shadcn UI initialisé
-
-✅ Composants UI principaux installés
-
-✅ Bibliothèques utilitaires installées
-
-✅ Fichier `.env.local` créé
-
-🚀 Le projet est prêt pour la configuration de Supabase et le développement des fonctionnalités.
