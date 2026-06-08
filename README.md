@@ -140,4 +140,3 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ✅ Fichier `.env.local` créé
 
 🚀 Le projet est prêt pour la configuration de Supabase et le développement des fonctionnalités.
->>>>>>> 36be35e08269eae8e64964c9acac7aa4b4cd3784
