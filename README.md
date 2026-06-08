@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Initialisation du projet Jeux Shop
 
-## Getting Started
+## 1. Installation de Supabase
 
-First, run the development server:
+Installation des dépendances nécessaires pour intégrer Supabase au projet Next.js :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install @supabase/supabase-js @supabase/ssr
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 2. Initialisation de Shadcn UI
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lancement de l'outil d'initialisation :
 
-## Learn More
+```bash
+npx shadcn@latest init
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Configuration choisie
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Component Library : Radix
+- Preset : Nova
+- Framework détecté : Next.js
+- Tailwind CSS : v4
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Fichiers générés
 
-## Deploy on Vercel
+```text
+src/components/ui/button.tsx
+src/lib/utils.ts
+components.json
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Fichiers modifiés
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+src/app/globals.css
+```
+
+---
+
+## 3. Installation des composants Shadcn UI
+
+Tentative initiale :
+
+```bash
+npx shadcn@latest add button card input label badge table dialog toast select
+```
+
+Le composant `toast` étant déprécié, utilisation de `sonner` à la place :
+
+```bash
+npx shadcn@latest add card input label badge table dialog select sonner
+```
+
+### Composants ajoutés
+
+```text
+src/components/ui/card.tsx
+src/components/ui/input.tsx
+src/components/ui/label.tsx
+src/components/ui/badge.tsx
+src/components/ui/table.tsx
+src/components/ui/select.tsx
+src/components/ui/sonner.tsx
+src/components/ui/dialog.tsx
+```
+
+### Composant ignoré
+
+```text
+src/components/ui/button.tsx
+```
+
+(car déjà créé lors de l'initialisation)
+
+---
+
+## 4. Installation des dépendances utilitaires
+
+Installation des bibliothèques utilisées dans l'interface :
+
+```bash
+npm install lucide-react clsx date-fns
+```
+
+### Dépendances installées
+
+- lucide-react : bibliothèque d'icônes
+- clsx : gestion des classes CSS conditionnelles
+- date-fns : manipulation et formatage des dates
+
+---
+
+## 5. Création du fichier d'environnement
+
+La commande :
+
+```bash
+echo. > .env.local
+```
+
+n'a pas fonctionné sous PowerShell.
+
+Création du fichier avec :
+
+```powershell
+New-Item .env.local
+```
+
+### Résultat
+
+Création du fichier :
+
+```text
+.env.local
+```
+
+Ce fichier servira à stocker les variables d'environnement du projet :
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+```
+
+---
+
+## État actuel du projet
+
+✅ Supabase installé
+
+✅ Shadcn UI initialisé
+
+✅ Composants UI principaux installés
+
+✅ Bibliothèques utilitaires installées
+
+✅ Fichier `.env.local` créé
+
+🚀 Le projet est prêt pour la configuration de Supabase et le développement des fonctionnalités.
+>>>>>>> 36be35e08269eae8e64964c9acac7aa4b4cd3784
