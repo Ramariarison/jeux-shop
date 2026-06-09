@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Badge } from '@/components/ui/badge'
+import CommandeModal from '@/components/commandes/CommandeModal'
 
 type Offre = {
   id: string
@@ -26,6 +27,7 @@ export default function CataloguePage() {
   const [jeux, setJeux] = useState<Jeu[]>([])
   const [loading, setLoading] = useState(true)
   const [jeuActif, setJeuActif] = useState<string | null>(null)
+  const [offreSelectionnee, setOffreSelectionnee] = useState<Offre | null>(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -58,14 +60,10 @@ export default function CataloguePage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
 
-      {/* Header */}
       <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-white">JeuxShop</h1>
-          <a
-            href="/login"
-            className="text-sm text-slate-400 hover:text-white transition-colors"
-          >
+          <a href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">
             Connexion
           </a>
         </div>
@@ -73,13 +71,11 @@ export default function CataloguePage() {
 
       <div className="max-w-5xl mx-auto px-4 py-10">
 
-        {/* Titre */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-white mb-2">Catalogue</h2>
           <p className="text-slate-400">Choisis ton jeu et recharge tes jetons instantanément</p>
         </div>
 
-        {/* Tabs jeux */}
         <div className="flex gap-3 mb-8 overflow-x-auto pb-2">
           {jeux.map((jeu) => (
             <button
@@ -96,7 +92,6 @@ export default function CataloguePage() {
           ))}
         </div>
 
-        {/* Offres du jeu sélectionné */}
         {jeuSelectionne && (
           <div>
             <div className="flex items-center gap-3 mb-6">
@@ -141,7 +136,10 @@ export default function CataloguePage() {
                         </p>
                         <p className="text-slate-400 text-xs">Ariary</p>
                       </div>
-                      <button className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25">
+                      <button
+                        onClick={() => setOffreSelectionnee(offre)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25"
+                      >
                         Commander
                       </button>
                     </div>
@@ -151,6 +149,15 @@ export default function CataloguePage() {
           </div>
         )}
       </div>
+
+      {/* Modal commande */}
+      {offreSelectionnee && jeuSelectionne && (
+        <CommandeModal
+          offre={offreSelectionnee}
+          jeu={jeuSelectionne}
+          onClose={() => setOffreSelectionnee(null)}
+        />
+      )}
     </div>
   )
 }
