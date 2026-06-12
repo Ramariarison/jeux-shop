@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import { ArrowRight, Zap, Shield, Clock, Star } from 'lucide-react'
+import { ArrowRight, Zap, Shield, Star } from 'lucide-react'
 
 type Jeu = {
   id: string
@@ -37,13 +37,8 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-purple-600 rounded-xl flex items-center justify-center">
-              🎮
-            </div>
-            <span className="text-white font-bold text-lg">Jeton Games</span>
-          </div>
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+          <span className="text-white font-bold text-lg">Jeton Games</span>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#jeux" className="text-slate-400 hover:text-white text-sm transition-colors">
               Jeux
@@ -90,7 +85,7 @@ export default function HomePage() {
         <div className="relative max-w-6xl mx-auto px-6 py-24 text-center">
           <div className="inline-flex items-center gap-2 bg-purple-600/15 border border-purple-500/25 text-purple-300 text-xs px-4 py-2 rounded-full mb-6">
             <Zap size={12} />
-            Livraison rapide — 15 min à 2h
+            Livraison rapide — 15 à 30 min
           </div>
 
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
@@ -167,33 +162,28 @@ export default function HomePage() {
             {[
               {
                 step: '01',
-                icon: '🎮',
                 title: 'Choisis ton jeu',
                 desc: 'Sélectionne ton jeu préféré et le pack de jetons qui te convient.',
               },
               {
                 step: '02',
-                icon: '👤',
                 title: 'Entre ton ID joueur',
                 desc: 'Renseigne ton identifiant en jeu pour qu\'on puisse te livrer les jetons.',
               },
               {
                 step: '03',
-                icon: '📱',
                 title: 'Paie via mobile money',
                 desc: 'Envoie le montant via Mvola, Airtel Money ou Orange Money.',
               },
               {
                 step: '04',
-                icon: '⚡',
                 title: 'Reçois tes jetons',
-                desc: 'Ton compte est rechargé en moins de 2h après confirmation du paiement.',
+                desc: 'Ton compte est rechargé en moins de 30 min après confirmation du paiement.',
               },
-            ].map(({ step, icon, title, desc }) => (
+            ].map(({ step, title, desc }) => (
               <div key={step} className="relative">
                 <div className="bg-white/5 border border-white/5 rounded-2xl p-6 h-full">
                   <div className="text-xs font-mono text-purple-500 mb-3">{step}</div>
-                  <div className="text-3xl mb-4">{icon}</div>
                   <h3 className="text-white font-semibold mb-2">{title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
                 </div>
@@ -217,7 +207,7 @@ export default function HomePage() {
               color: 'text-yellow-400',
               bg: 'bg-yellow-500/10 border-yellow-500/20',
               title: 'Livraison rapide',
-              desc: 'Tes jetons sont livrés en 15 minutes à 2 heures maximum après confirmation du paiement.',
+              desc: 'Tes jetons sont livrés en 15 minutes à 30 minutes maximum après confirmation du paiement.',
             },
             {
               icon: Shield,
@@ -256,7 +246,7 @@ export default function HomePage() {
             {[
               {
                 q: 'Combien de temps prend la livraison ?',
-                a: 'En général entre 15 minutes et 2 heures après confirmation de votre paiement. En dehors des heures de pointe, c\'est souvent plus rapide.',
+                a: 'En général entre 15 minutes et 30 minutes après confirmation de votre paiement. En dehors des heures de pointe, c\'est souvent plus rapide.',
               },
               {
                 q: 'Quels moyens de paiement acceptez-vous ?',
@@ -309,12 +299,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-purple-600 rounded-lg flex items-center justify-center text-sm">
-              🎮
-            </div>
-            <span className="text-slate-400 text-sm">Jeton Games © 2025</span>
-          </div>
+          <span className="text-slate-400 text-sm">Jeton Games © 2026</span>
           <div className="flex items-center gap-6">
             <a href="/catalogue" className="text-slate-500 hover:text-white text-sm transition-colors">
               Catalogue

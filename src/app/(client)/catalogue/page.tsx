@@ -63,8 +63,8 @@ export default function CataloguePage() {
       <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-white">JeuxShop</h1>
-          <a href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Connexion
+          <a href="/commande" className="text-sm text-slate-400 hover:text-white transition-colors">
+            Mes commandes
           </a>
         </div>
       </header>
