@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import {
   CheckCircle, XCircle, Clock, RefreshCw,
-  GamepadIcon, User, CreditCard, Hash, TrendingUp
+  GamepadIcon, User, CreditCard, Hash, TrendingUp,
+  LogOut
 } from 'lucide-react'
 
 type Commande = {
@@ -147,7 +148,7 @@ export default function DashboardPage() {
           ))}
         </nav>
         <div className="p-4 border-t border-white/5">
-          <div className="flex items-center gap-3 px-2">
+          <div className="flex items-center gap-3 px-2 mb-3">
             <div className="w-8 h-8 rounded-full bg-purple-600/30 border border-purple-500/30 flex items-center justify-center text-xs text-purple-300 font-medium">
               A
             </div>
@@ -156,6 +157,16 @@ export default function DashboardPage() {
               <p className="text-slate-500 text-xs">Connecté</p>
             </div>
           </div>
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut()
+              window.location.href = '/'
+            }}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-all"
+          >
+            <LogOut size={14} />
+            Déconnexion
+          </button>
         </div>
       </aside>
 

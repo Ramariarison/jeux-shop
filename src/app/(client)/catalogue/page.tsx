@@ -29,6 +29,9 @@ export default function CataloguePage() {
   const [jeuActif, setJeuActif] = useState<string | null>(null)
   const [offreSelectionnee, setOffreSelectionnee] = useState<Offre | null>(null)
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any>(null)
+
   useEffect(() => {
     async function fetchData() {
       const { data } = await supabase
@@ -41,10 +44,13 @@ export default function CataloguePage() {
         setJeux(data)
         setJeuActif(data[0]?.id ?? null)
       }
+
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+
       setLoading(false)
     }
     fetchData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const jeuSelectionne = jeux.find(j => j.id === jeuActif)
@@ -60,14 +66,33 @@ export default function CataloguePage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
 
-      <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white">JeuxShop</h1>
-          <a href="/commande" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Mes commandes
-          </a>
+    <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
+      <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 className="text-xl font-bold text-white">Jeton Games</h1>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <>
+              <a href="/commandes" className="text-sm text-slate-400 hover:text-white transition-colors">
+                Mes commandes
+              </a>
+              <button
+                onClick={async () => {
+                  await supabase.auth.signOut()
+                  window.location.href = '/'
+                }}
+                className="text-sm text-red-400 hover:text-red-300 transition-colors"
+              >
+                Déconnexion
+              </button>
+            </>
+          ) : (
+            <a href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">
+              Connexion
+            </a>
+          )}
         </div>
-      </header>
+      </div>
+    </header>
 
       <div className="max-w-5xl mx-auto px-4 py-10">
 

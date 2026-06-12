@@ -41,7 +41,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   const needsServerId = ['mobile-legends'].includes(jeu.slug)
 
   const numerosPaiement = {
-    mvola: '034 XX XXX XX',
+    mvola: '034 25 776 65',
     airtel: '033 XX XXX XX',
     orange: '032 XX XXX XX',
   }
@@ -249,7 +249,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           {/* Instructions paiement */}
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
             <p className="text-amber-300 text-sm font-medium mb-1">
-              📱 Envoyez {offre.prix_ariary.toLocaleString()} Ar au :
+              Envoyez {offre.prix_ariary.toLocaleString()} Ar au :
             </p>
             <p className="text-white font-bold text-lg">{numerosPaiement[methodePaiement]}</p>
             <p className="text-amber-300/70 text-xs mt-1">
@@ -280,7 +280,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           </Button>
 
           <p className="text-center text-slate-500 text-xs">
-            Délai de livraison estimé : 15 min à 2h
+            Délai de livraison estimé : 15 à 30 min
           </p>
         </div>
       </div>

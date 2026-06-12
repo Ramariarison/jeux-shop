@@ -95,12 +95,23 @@ export default function MesCommandesPage() {
             <ArrowLeft size={16} />
             Retour au catalogue
           </a>
-          <button
-            onClick={fetchCommandes}
-            className="text-slate-400 hover:text-white transition-colors"
-          >
-            <RefreshCw size={16} />
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={fetchCommandes}
+              className="text-slate-400 hover:text-white transition-colors"
+            >
+              <RefreshCw size={16} />
+            </button>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut()
+                window.location.href = '/'
+              }}
+              className="text-sm text-red-400 hover:text-red-300 transition-colors"
+            >
+              Déconnexion
+            </button>
+          </div>
         </div>
       </header>
 
