@@ -68,7 +68,16 @@ export default function CataloguePage() {
 
     <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
       <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Jeton Games</h1>
+        <div className="flex items-center gap-2">
+          <Image
+            src="/signature.png"
+            alt="Rabbit Shop"
+            width={56}
+            height={56}
+            className="object-contain"
+          />
+          <h1 className="text-xl font-bold text-white">Rabbit Shop</h1>
+        </div>
         <div className="flex items-center gap-4">
           {user ? (
             <>

@@ -14,7 +14,7 @@ const rajdhani = Rajdhani({
 })
 
 export const metadata: Metadata = {
-  title: 'Jeton Games - Recharge tes jetons',
+  title: 'Rabbit Shop - Recharge tes jetons',
   description: 'Achetez vos diamonds, UC et jetons de jeux mobiles facilement à Madagascar',
 }
 

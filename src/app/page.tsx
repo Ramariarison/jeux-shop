@@ -30,6 +30,7 @@ export default function HomePage() {
       setUser(user)
     }
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -38,7 +39,16 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <span className="text-white font-bold text-lg">Jeton Games</span>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/signature.png"
+              alt="Rabbit Shop"
+              width={56}
+              height={56}
+              className="object-contain"
+            />
+            <span className="text-white font-bold text-lg">Rabbit Shop</span>
+          </div>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#jeux" className="text-slate-400 hover:text-white text-sm transition-colors">
               Jeux
@@ -67,7 +77,7 @@ export default function HomePage() {
                   href="/register"
                   className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all"
                 >
-                  S`inscrire
+                  S&apos;inscrire
                 </a>
               </>
             )}
@@ -90,7 +100,7 @@ export default function HomePage() {
 
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
             Recharge tes jetons
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+            <span className="block text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-blue-400">
               facilement à Madagascar
             </span>
           </h1>
@@ -280,7 +290,7 @@ export default function HomePage() {
 
       {/* CTA Final */}
       <section className="max-w-6xl mx-auto px-6 py-20 text-center">
-        <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/20 rounded-3xl p-12">
+        <div className="bg-linear-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/20 rounded-3xl p-12">
           <h2 className="text-3xl font-bold text-white mb-4">
             Prêt à recharger tes jetons ?
           </h2>

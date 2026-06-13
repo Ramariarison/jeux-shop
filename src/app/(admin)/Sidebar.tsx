@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { GamepadIcon, Package, Users, LogOut } from 'lucide-react'
+import Image from 'next/image'
 
 type Props = {
   active: 'commandes' | 'jeux' | 'offres' | 'utilisateurs'
@@ -19,13 +20,19 @@ export default function Sidebar({ active }: Props) {
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#13131f] border-r border-white/5 z-20 flex flex-col">
-      <div className="p-6 border-b border-white/5">
+      <div className="p-3 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-purple-600 rounded-xl flex items-center justify-center text-base">
-            🎮
+          <div className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden">
+            <Image
+              src="/signature.png"
+              alt="Rabbit Shop"
+              width={56}
+              height={56}
+              className="object-contain"
+            />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">Jeton Games</p>
+            <p className="text-white font-semibold text-sm">Rabbit Shop</p>
             <p className="text-slate-500 text-xs">Administration</p>
           </div>
         </div>

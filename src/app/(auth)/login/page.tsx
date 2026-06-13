@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -51,11 +52,20 @@ async function handleLogin() {
 
       <div className="relative w-full max-w-md">
         
-        {/* Logo / Titre */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">JeuxShop</h1>
-          <p className="text-slate-400 mt-1">Recharge tes jetons facilement</p>
+      {/* Logo / Titre */}
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-2 mb-1">
+          <Image
+            src="/signature.png"
+            alt="Rabbit Shop"
+            width={56}
+            height={56}
+            className="object-contain"
+          />
+          <h1 className="text-3xl font-bold text-white">Rabbit Shop</h1>
         </div>
+        <p className="text-slate-400 mt-1">Recharge tes jetons facilement</p>
+      </div>
 
         {/* Card */}
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-2xl">
