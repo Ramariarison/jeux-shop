@@ -16,18 +16,32 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  async function handleLogin() {
-    setLoading(true)
-    setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
+async function handleLogin() {
+  setLoading(true)
+  setError('')
+
+  const { error, data } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error || !data.user) {
       setError('Email ou mot de passe incorrect')
       setLoading(false)
       return
     }
-    router.push('/catalogue')
-  }
 
+    // Vérifie le rôle de l'utilisateur
+    const { data: userData } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', data.user.id)
+      .single()
+
+    if (userData?.role === 'admin') {
+      router.push('/dashboard')
+    } else {
+      router.push('/catalogue')
+    }
+  }
+  
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       

@@ -72,7 +72,7 @@ export default function CataloguePage() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              <a href="/commandes" className="text-sm text-slate-400 hover:text-white transition-colors">
+              <a href="/commande" className="text-sm text-slate-400 hover:text-white transition-colors">
                 Mes commandes
               </a>
               <button
