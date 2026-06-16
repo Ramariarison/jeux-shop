@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, Clock, CheckCircle, XCircle, CreditCard, RefreshCw } from 'lucide-react'
+import Image from 'next/image'
 
 type Commande = {
   id: string
@@ -50,11 +51,10 @@ const statutConfig: Record<string, { label: string; color: string; dot: string; 
   },
 }
 
-const jeuEmoji: Record<string, string> = {
-  'Free Fire': '🔥',
-  'PUBG Mobile': '🪖',
-  'Mobile Legends': '⚔️',
-  'Clash of Clans': '🏰',
+const jeuImages: Record<string, string> = {
+  'Free Fire': '/images/freefire-diamonds.png',
+  'PUBG Mobile': '/images/pubg-uc.png',
+  'Mobile Legends': '/images/ml-diamonds.png',
 }
 
 const etapes = ['en_attente_paiement', 'paiement_recu', 'en_traitement', 'livree']
@@ -158,8 +158,18 @@ export default function MesCommandesPage() {
                   {/* Header card */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-lg">
-                        {jeuEmoji[commande.offres?.jeux?.nom] ?? '🎮'}
+                      <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/20 flex items-center justify-center overflow-hidden">
+                        {jeuImages[commande.offres?.jeux?.nom] ? (
+                          <Image
+                            src={jeuImages[commande.offres?.jeux?.nom]}
+                            alt={commande.offres?.jeux?.nom}
+                            width={40}
+                            height={40}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-lg">🎮</span>
+                        )}
                       </div>
                       <div>
                         <p className="text-white font-semibold text-sm">

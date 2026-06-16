@@ -31,14 +31,11 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   const supabase = createClient()
 
   const [playerId, setPlayerId] = useState('')
-  const [serverId, setServerId] = useState('')
   const [methodePaiement, setMethodePaiement] = useState<'mvola' | 'airtel' | 'orange'>('mvola')
   const [referencePaiement, setReferencePaiement] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [etape, setEtape] = useState<1 | 2>(1)
-
-  const needsServerId = ['mobile-legends'].includes(jeu.slug)
 
   const numerosPaiement = {
     mvola: '034 25 776 65',
@@ -49,10 +46,6 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   async function handleSubmit() {
     if (!playerId.trim()) {
       setError('Veuillez entrer votre ID joueur')
-      return
-    }
-    if (needsServerId && !serverId.trim()) {
-      setError('Veuillez entrer votre ID serveur')
       return
     }
     if (!referencePaiement.trim()) {
@@ -77,7 +70,6 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
         user_id: user.id,
         offre_id: offre.id,
         player_id_jeu: playerId,
-        server_id: serverId || null,
         montant_ariary: offre.prix_ariary,
         montant_usd: offre.prix_usd,
         statut: 'en_attente_paiement',
@@ -208,21 +200,6 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
               Trouvez votre ID dans le profil du jeu
             </p>
           </div>
-
-          {/* Server ID (Mobile Legends uniquement) */}
-          {needsServerId && (
-            <div>
-              <Label className="text-slate-300 text-sm mb-1.5 block">
-                ID Serveur <span className="text-red-400">*</span>
-              </Label>
-              <Input
-                placeholder="Ex: 1234"
-                value={serverId}
-                onChange={(e) => setServerId(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-slate-500 rounded-xl h-11"
-              />
-            </div>
-          )}
 
           {/* Méthode de paiement */}
           <div>
