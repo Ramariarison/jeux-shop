@@ -83,14 +83,16 @@ export default function MesCommandesPage() {
     setLoading(false)
   }
 
-  useEffect(() => { fetchCommandes() }, [])
+  useEffect(() => {
+    fetchCommandes()
+   }, [])
 
   return (
     <div className="min-h-screen bg-[#0f0f1a] text-white">
 
       {/* Header */}
       <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <a href="/catalogue" className="flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors">
             <ArrowLeft size={16} />
             Retour au catalogue
@@ -115,7 +117,7 @@ export default function MesCommandesPage() {
         </div>
       </header>
 
-      <div className="max-w-3xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-6 py-10">
 
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-1">Mes commandes</h1>
@@ -213,20 +215,20 @@ export default function MesCommandesPage() {
                   )}
 
                   {/* Détails */}
-                  <div className="border-t border-white/5 pt-3 grid grid-cols-2 gap-3 text-xs">
+                  <div className="border-t border-white/5 pt-3 flex justify-between text-xs">
                     <div>
                       <p className="text-slate-500 mb-0.5">ID Joueur</p>
-                      <p className="text-white font-mono">{commande.player_id_jeu}</p>
+                      <p className="text-gray-300 font-mono">{commande.player_id_jeu}</p>
                     </div>
                     {commande.server_id && (
                       <div>
                         <p className="text-slate-500 mb-0.5">Serveur</p>
-                        <p className="text-white font-mono">{commande.server_id}</p>
+                        <p className="text-gray-300 font-mono">{commande.server_id}</p>
                       </div>
                     )}
                     <div>
                       <p className="text-slate-500 mb-0.5">Paiement</p>
-                      <p className="text-white">
+                      <p className="text-gray-300">
                         {commande.paiements?.[0]?.methode?.toUpperCase()} · {commande.paiements?.[0]?.reference_mvola}
                       </p>
                     </div>

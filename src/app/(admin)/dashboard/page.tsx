@@ -53,13 +53,6 @@ const statutConfig: Record<string, { label: string; color: string; dot: string }
   },
 }
 
-const jeuEmoji: Record<string, string> = {
-  'Free Fire': '🔥',
-  'PUBG Mobile': '🪖',
-  'Mobile Legends': '⚔️',
-  'Clash of Clans': '🏰',
-}
-
 export default function DashboardPage() {
   const supabase = createClient()
   const [commandes, setCommandes] = useState<Commande[]>([])
@@ -174,12 +167,12 @@ export default function DashboardPage() {
 
             {/* Table header */}
             <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
-              <div className="col-span-3">Jeu / Offre</div>
+              <div className="col-span-2">Jeu / Offre</div>
               <div className="col-span-2">Client</div>
               <div className="col-span-2">ID Joueur</div>
               <div className="col-span-2">Paiement</div>
               <div className="col-span-1">Montant</div>
-              <div className="col-span-1">Statut</div>
+              <div className="col-span-2">Statut</div>
               <div className="col-span-1">Date</div>
             </div>
 
@@ -193,10 +186,7 @@ export default function DashboardPage() {
                 }`}
               >
                 {/* Jeu */}
-                <div className="col-span-3 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-base flex-shrink-0">
-                    {jeuEmoji[commande.offres?.jeux?.nom] ?? '🎮'}
-                  </div>
+                <div className="col-span-2 flex items-center gap-3">
                   <div className="min-w-0">
                     <p className="text-white text-sm font-medium truncate">
                       {commande.offres?.jeux?.nom}
@@ -246,7 +236,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Statut */}
-                <div className="col-span-1 flex items-center">
+                <div className="col-span-2 flex items-center">
                   <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${statutConfig[commande.statut]?.color}`}>
                     <div className={`w-1.5 h-1.5 rounded-full ${statutConfig[commande.statut]?.dot}`} />
                     <span className="hidden xl:block">{statutConfig[commande.statut]?.label}</span>
@@ -280,15 +270,12 @@ export default function DashboardPage() {
           <div className="bg-[#13131f] border border-white/10 rounded-2xl w-full max-w-lg shadow-2xl">
 
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-lg">
-                  {jeuEmoji[commandeSelectionnee.offres?.jeux?.nom] ?? '🎮'}
-                </div>
-                <div>
-                  <p className="text-white font-semibold">{commandeSelectionnee.offres?.jeux?.nom}</p>
-                  <p className="text-purple-400 text-sm">{commandeSelectionnee.offres?.label}</p>
-                </div>
+
+              <div>
+                <p className="text-white font-semibold">{commandeSelectionnee.offres?.jeux?.nom}</p>
+                <p className="text-purple-400 text-sm">{commandeSelectionnee.offres?.label}</p>
               </div>
+
               <button onClick={() => setCommandeSelectionnee(null)} className="text-slate-500 hover:text-white transition-colors">
                 <XCircle size={20} />
               </button>

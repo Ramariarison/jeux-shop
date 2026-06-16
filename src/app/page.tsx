@@ -39,7 +39,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <Image
               src="/signature.png"
               alt="Rabbit Shop"
