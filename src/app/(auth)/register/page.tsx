@@ -45,12 +45,12 @@ export default function RegisterPage() {
 
         {/* Logo / Titre */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-1">
+          <div className="flex items-center justify-center mb-1">
             <Image
               src="/signature.png"
               alt="Rabbit Shop"
-              width={56}
-              height={56}
+              width={74}
+              height={74}
               className="object-contain"
             />
             <h1 className="text-3xl font-bold text-white">Rabbit Shop</h1>
