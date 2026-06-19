@@ -1,17 +1,19 @@
-'use server'
-
 import { createClient } from "@/lib/supabase/server"
+import { getCurrentUser } from "./user.service"
+import { findCommande } from "@/repositories/commande.repository"
 
-export async function getCommandes() {
-    const supabase = await createClient()
+export async function getCommandeById() {
 
-      const { data, error } = await supabase
-        .from('jeux')
-        .select('*, offres(*)')
-        .eq('actif', true)
-        .order('nom')
+  const supabase = await createClient()
 
-    if(error) throw error
+  const user = await getCurrentUser()
 
-    return data
+  const user_id = user?.id
+
+  const { data, error } = await findCommande(supabase, user_id)
+
+  if (error) throw error
+
+  return data
+
 }

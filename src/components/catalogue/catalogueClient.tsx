@@ -6,7 +6,7 @@ import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 
 import { Badge } from '@/components/ui/badge'
-import CommandeModal from '@/components/commandes/CommandeModal'
+import CommandeModal from '@/components/commandes/commandeModal/commandeModal'
 import { logout } from '@/app/(auth)/action'
 
 import type { Jeu, Offre } from '@/types/catalogue'
