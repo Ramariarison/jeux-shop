@@ -4,13 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-
-type Jeu = {
-  id: string;
-  nom: string;
-  slug: string;
-  logo_url: string;
-};
+import { Jeu } from "@/types/jeux";
 
 export default function JeuxSection() {
   const supabase = createClient();
