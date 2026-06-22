@@ -1,25 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
 import { ArrowRight } from "lucide-react";
+import { User } from "@supabase/supabase-js";
 
-export default function Header() {
-  const supabase = createClient();
-  const [user, setUser] = useState<unknown>(null);
+interface Props {
+  user: User | null
+}
 
-  useEffect(() => {
-    async function fetchUser() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    }
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+export default function Header({ user }: Props) {
   return (
     <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
