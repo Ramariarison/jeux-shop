@@ -135,12 +135,7 @@ export default function CatalogueClient({
             {/* Offres */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {
-                [...jeuSelectionne.offres]
-                  .sort(
-                    (a, b) =>
-                      a.prix_ariary - b.prix_ariary
-                  )
-                  .map(
+                [...jeuSelectionne.offres].sort((a, b) => a.prix_ariary - b.prix_ariary).map(
                     offre => (
                       <div
                         key={offre.id}

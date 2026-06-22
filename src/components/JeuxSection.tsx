@@ -1,28 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { Jeu } from "@/types/jeux";
 
-export default function JeuxSection() {
-  const supabase = createClient();
-  const [jeux, setJeux] = useState<Jeu[]>([]);
+interface Props {
+  jeux: Jeu[]
+}
 
-  useEffect(() => {
-    async function fetchJeux() {
-      const { data } = await supabase
-        .from("jeux")
-        .select("id, nom, slug, logo_url")
-        .eq("actif", true);
-
-      if (data) setJeux(data);
-    }
-    fetchJeux();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+export default function JeuxSection({ jeux }: Props) {
   return (
     <section id="jeux" className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-12">

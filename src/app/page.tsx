@@ -6,13 +6,20 @@ import PourquoiSection from "@/components/PourquoiSection";
 import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import { getCurrentUser } from "@/services/user.service";
+import { getJeux } from "@/services/jeux.service";
 
-export default function HomePage() {
+export default async function HomePage() {
+
+  const user = await getCurrentUser();
+
+  const jeux = await getJeux();
+
   return (
     <div className="min-h-screen bg-[#0f0f1a] text-white">
-      <Header />
+      <Header user={user}/>
       <HeroSection />
-      <JeuxSection />
+      <JeuxSection jeux={jeux}/>
       <CommentSection />
       <PourquoiSection />
       <FaqSection />
