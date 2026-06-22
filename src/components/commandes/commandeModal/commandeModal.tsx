@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
+import { X, CreditCard, PhoneCall } from 'lucide-react'
 
 type Offre = {
   id: string
@@ -42,6 +42,27 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
     airtel: '033 XX XXX XX',
     orange: '032 XX XXX XX',
   }
+
+  {/* Début de la nouvelle fonctionnalité */}
+  const codesUSSD = {
+    mvola: `#111*1*1*0342577665*${offre.prix_ariary}#`,
+    airtel: '',
+    orange: '',
+  }
+
+  function procederPaiement() {
+    const ussd = codesUSSD[methodePaiement]
+
+    if (!ussd) {
+      alert('Code USSD non disponible pour cette méthode.')
+      return
+    }
+
+    const encoded = ussd.replace(/#/g, '%23')
+
+    window.location.href = `tel:${encoded}`
+  }
+  {/* fin du nouvelle fonctionnalité */}
 
   async function handleSubmit() {
     if (!playerId.trim()) {
@@ -155,7 +176,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
             <h3 className="text-white font-semibold text-lg">Commander</h3>
-            <p className="text-slate-400 text-sm">{jeu.nom} — {offre.label}</p>
+            <p className="text-slate-400 text-sm">{jeu.nom} {offre.label}</p>
           </div>
           <button
             onClick={onClose}
@@ -165,19 +186,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
-
-          {/* Récap offre */}
-          <div className="bg-purple-600/20 border border-purple-500/30 rounded-xl p-4 flex items-center justify-between">
-            <div>
-              <p className="text-white font-semibold">{offre.label}</p>
-              <p className="text-purple-300 text-sm">{offre.quantite_jetons.toLocaleString()} jetons</p>
-            </div>
-            <div className="text-right">
-              <p className="text-white font-bold text-xl">{offre.prix_ariary.toLocaleString()} Ar</p>
-              <p className="text-purple-300 text-xs">${offre.prix_usd}</p>
-            </div>
-          </div>
+        <div className="p-6 space-y-3">
 
           {error && (
             <div className="bg-red-500/20 border border-red-500/50 text-red-200 text-sm p-3 rounded-xl">
@@ -188,7 +197,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           {/* ID Joueur */}
           <div>
             <Label className="text-slate-300 text-sm mb-1.5 block">
-              ID Joueur <span className="text-red-400">*</span>
+              ID Joueur <span className="text-emerald-400">*</span>
             </Label>
             <Input
               placeholder="Entrez votre ID en jeu"
@@ -204,7 +213,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           {/* Méthode de paiement */}
           <div>
             <Label className="text-slate-300 text-sm mb-2 block">
-              Méthode de paiement <span className="text-red-400">*</span>
+              Méthode de paiement <span className="text-emerald-400">*</span>
             </Label>
             <div className="grid grid-cols-3 gap-2">
               {(['mvola', 'airtel', 'orange'] as const).map((m) => (
@@ -224,20 +233,57 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           </div>
 
           {/* Instructions paiement */}
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
-            <p className="text-amber-300 text-sm font-medium mb-1">
-              Envoyez {offre.prix_ariary.toLocaleString()} Ar au :
-            </p>
-            <p className="text-white font-bold text-lg">{numerosPaiement[methodePaiement]}</p>
-            <p className="text-amber-300/70 text-xs mt-1">
-              Puis entrez la référence de la transaction ci-dessous
-            </p>
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-emerald-400" />
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">
+                  Paiement {methodePaiement.toUpperCase()}
+                </p>
+
+                <p className="text-xs text-slate-400">
+                  Transférez exactement le montant indiqué
+                </p>
+              </div>
+            </div>
+
+
+            <div className="rounded-xl bg-black/20 p-3 mb-2">
+
+              <p className="text-xs text-slate-400 mb-1">
+                Numéro destinataire
+              </p>
+
+              <p className="text-lg font-bold text-white tracking-wide">
+                {numerosPaiement[methodePaiement]}
+              </p>
+
+              <p className="mt-2 text-xs text-emerald-300">
+                Montant : {offre.prix_ariary.toLocaleString()} Ar
+              </p>
+
+            </div>
+
+
+            <Button
+              type="button"
+              onClick={procederPaiement}
+              className="w-full h-11 rounded-xl bg-emerald-600! hover:bg-emerald-700! text-white font-semibold shadow-lg shadow-emerald-600/20"
+            >
+              <PhoneCall className="mr-2 h-4 w-4" />
+              Procéder au paiement
+            </Button>
+
           </div>
 
           {/* Référence paiement */}
           <div>
             <Label className="text-slate-300 text-sm mb-1.5 block">
-              Référence de transaction <span className="text-red-400">*</span>
+              Référence de transaction <span className="text-emerald-400">*</span>
             </Label>
             <Input
               placeholder="Ex: MVOLA-123456789"
