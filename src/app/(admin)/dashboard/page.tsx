@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, XCircle, Clock, RefreshCw, User, CreditCard, Hash, TrendingUp } from 'lucide-react'
 import Sidebar from '../Sidebar'
+import { getAllCommande, updateCommandeStatutComplet } from '@/services/commande.service'
 
 type Commande = {
   id: string
@@ -54,40 +54,51 @@ const statutConfig: Record<string, { label: string; color: string; dot: string }
 }
 
 export default function DashboardPage() {
-  const supabase = createClient()
   const [commandes, setCommandes] = useState<Commande[]>([])
   const [loading, setLoading] = useState(true)
   const [filtreStatut, setFiltreStatut] = useState('tous')
   const [commandeSelectionnee, setCommandeSelectionnee] = useState<Commande | null>(null)
   const [actionLoading, setActionLoading] = useState(false)
 
-  async function fetchCommandes() {
+  async function loadData() {
     setLoading(true)
-    const { data } = await supabase
-      .from('commandes')
-      .select(`*, users(nom, email, telephone), offres(label, jeux(nom)), paiements(id, methode, reference_mvola, statut, montant)`)
-      .order('created_at', { ascending: false })
-    if (data) setCommandes(data)
-    setLoading(false)
+    try {
+      const data = await getAllCommande()
+      if (data) setCommandes(data)
+    } catch (error) {
+      console.error("Erreur:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  useEffect(() => { fetchCommandes() }, [])
+  useEffect(() => { 
+    loadData()
+  }, [])
+
+  const handleRefresh = () => {
+    loadData()
+  }
 
   async function updateStatut(commandeId: string, newStatut: string) {
     setActionLoading(true)
-    await supabase
-      .from('commandes')
-      .update({ statut: newStatut, updated_at: new Date().toISOString() })
-      .eq('id', commandeId)
-    if (newStatut === 'paiement_recu' && commandeSelectionnee) {
-      await supabase
-        .from('paiements')
-        .update({ statut: 'confirme', paid_at: new Date().toISOString() })
-        .eq('commande_id', commandeId)
+    const updatePaiement: boolean = newStatut ==='paiement_recu'
+    
+    try {
+      await updateCommandeStatutComplet(
+        commandeId, 
+        newStatut,
+        updatePaiement
+      )
+
+      await loadData()
+      
+      setCommandeSelectionnee(null)
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour:", err)
+    } finally {
+      setActionLoading(false)
     }
-    await fetchCommandes()
-    setCommandeSelectionnee(null)
-    setActionLoading(false)
   }
 
   const commandesFiltrees = filtreStatut === 'tous'
@@ -119,7 +130,7 @@ export default function DashboardPage() {
             </p>
           </div>
           <button
-            onClick={fetchCommandes}
+            onClick={() => handleRefresh()}
             className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-slate-400 hover:text-white text-sm transition-all"
           >
             <RefreshCw size={14} />
