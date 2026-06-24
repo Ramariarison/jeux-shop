@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Plus, Pencil, Trash2, X } from 'lucide-react'
-import Sidebar from '../../Sidebar'
+import SidebarClient from '@/components/sidebar/sidebarClient'
+import { useAuth } from '@/contexts/authContext'
 
 type Jeu = {
   id: string
@@ -17,6 +18,7 @@ type Jeu = {
 }
 
 export default function JeuxPage() {
+  const { user } = useAuth()
   const supabase = createClient()
   const [jeux, setJeux] = useState<Jeu[]>([])
   const [loading, setLoading] = useState(true)
@@ -36,7 +38,13 @@ export default function JeuxPage() {
     setLoading(false)
   }
 
-  useEffect(() => { fetchJeux() }, [])
+  useEffect(() => { 
+    async function init() {
+      await fetchJeux()
+    }
+    init()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function openCreate() {
     setJeuEdit(null)
@@ -76,7 +84,7 @@ export default function JeuxPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <Sidebar active="jeux" />
+      <SidebarClient active="jeux" user={user} />
 
       <main className="ml-64 p-8">
         <div className="flex items-center justify-between mb-8">

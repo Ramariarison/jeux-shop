@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Plus, Pencil, Trash2, X } from 'lucide-react'
-import Sidebar from '../../Sidebar'
+import SidebarClient from '@/components/sidebar/sidebarClient'
+import { useAuth } from '@/contexts/authContext'
 
 type Offre = {
   id: string
@@ -28,6 +29,7 @@ type Jeu = {
 
 export default function OffresPage() {
   const supabase = createClient()
+  const { user } = useAuth()
   const [jeux, setJeux] = useState<Jeu[]>([])
   const [loading, setLoading] = useState(true)
   const [jeuActif, setJeuActif] = useState<string | null>(null)
@@ -56,7 +58,13 @@ export default function OffresPage() {
     setLoading(false)
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    async function init() {
+      await fetchData() 
+    }
+    init()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const jeuSelectionne = jeux.find(j => j.id === jeuActif)
 
@@ -112,7 +120,7 @@ export default function OffresPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <Sidebar active="offres" />
+      <SidebarClient active="offres" user={user} />
 
       <main className="ml-64 p-8">
         <div className="flex items-center justify-between mb-8">

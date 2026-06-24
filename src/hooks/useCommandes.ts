@@ -1,25 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getAllCommande, updateCommandeStatutComplet } from '@/services/commande.service'
 import { CheckCircle, Clock, CreditCard, TrendingUp } from 'lucide-react'
-
-type Commande = {
-  id: string
-  player_id_jeu: string
-  server_id: string | null
-  montant_ariary: number
-  montant_usd: number
-  statut: string
-  created_at: string
-  users: { nom: string; email: string; telephone: string }
-  offres: { label: string; jeux: { nom: string } }
-  paiements: {
-    id: string
-    methode: string
-    reference_mvola: string
-    statut: string
-    montant: number
-  }[]
-}
+import { Commande } from '@/types/commande'
 
 export function useCommandes() {
   const [commandes, setCommandes] = useState<Commande[]>([])
@@ -66,7 +48,7 @@ export function useCommandes() {
     }
   }
 
-    // Chargement initial
+  // Chargement initial
   useEffect(() => {
     async function init() {
         await loadData()

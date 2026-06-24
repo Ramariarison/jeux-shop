@@ -6,6 +6,13 @@ export type Commande = {
   montant_usd: number
   statut: string
   created_at: string
+  users: { nom: string; email: string; telephone: string }
   offres: { label: string; jeux: { nom: string } }
-  paiements: { methode: string; reference_mvola: string; statut: string }[]
+  paiements: {
+    id: string
+    methode: string
+    reference_mvola: string
+    statut: string
+    montant: number
+  }[]
 }
