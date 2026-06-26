@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Badge } from '@/components/ui/badge'
-import Sidebar from '../../Sidebar'
+import SidebarClient from '@/components/sidebar/sidebarClient'
 import { Shield, User as UserIcon, Mail, Phone } from 'lucide-react'
+import { useAuth } from '@/contexts/authContext'
 
 type User = {
   id: string
@@ -16,6 +17,7 @@ type User = {
 }
 
 export default function UtilisateursPage() {
+  const { user } = useAuth()
   const supabase = createClient()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -32,7 +34,13 @@ export default function UtilisateursPage() {
     setLoading(false)
   }
 
-  useEffect(() => { fetchUsers() }, [])
+  useEffect(() => { 
+    async function init() {
+      await fetchUsers()
+    }
+    init() 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function toggleRole(user: User) {
     setUpdating(user.id)
@@ -52,7 +60,7 @@ export default function UtilisateursPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <Sidebar active="utilisateurs" />
+      <SidebarClient active="utilisateurs" user={user} />
 
       <main className="ml-64 p-8">
         <div className="flex items-center justify-between mb-8">
