@@ -22,7 +22,7 @@ export default function SidebarClient({ active, user, logout }: Props) {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#13131f] border-r border-white/5 z-20 flex flex-col">
       <div className="p-3 border-b border-white/5">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           <div className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden">
             <Image
               src="/signature.png"
