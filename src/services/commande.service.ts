@@ -1,8 +1,13 @@
 'use server'
 
-import { createClient } from "@/lib/supabase/server"
-import { getCurrentUser } from "./user.service"
-import { findCommande, findAllCommande, updateCommandeStatut, updatePaiementStatut } from "@/repositories/commande.repository"
+import { createClient } from '@/lib/supabase/server'
+import { getCurrentUser } from './user.service'
+import {
+  findCommande,
+  findAllCommande,
+  updateCommandeStatut,
+  updatePaiementStatut
+} from '@/repositories/commande.repository'
 
 export async function getCommandeById() {
   const supabase = await createClient()
@@ -13,7 +18,6 @@ export async function getCommandeById() {
   if (error) throw error
 
   return data
-
 }
 
 export async function getAllCommande() {
@@ -23,24 +27,22 @@ export async function getAllCommande() {
   if (error) throw error
 
   return data
-
 }
 
 export async function updateCommandeStatutComplet(
-  commandeId: string, 
+  commandeId: string,
   newStatut: string,
   updatePaiement: boolean
-) 
-{
+) {
   const supabase = await createClient()
-  
+
   // Maj status commande
   const { data: commandeData, error: commandeError } = await updateCommandeStatut(
     supabase,
     commandeId,
     newStatut
   )
-  
+
   if (commandeError) throw commandeError
 
   // Maj status paiement
@@ -51,7 +53,7 @@ export async function updateCommandeStatutComplet(
       commandeId,
       paiementStatut
     )
-    
+
     if (paiementError) throw paiementError
 
     return commandeData
