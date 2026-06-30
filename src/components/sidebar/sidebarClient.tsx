@@ -3,20 +3,19 @@
 import { GamepadIcon, Package, Users, LogOut } from 'lucide-react'
 import { User } from '@supabase/supabase-js'
 import Image from 'next/image'
+import { logout } from '@/app/(auth)/action'
 
 type Props = {
   active: 'commandes' | 'jeux' | 'offres' | 'utilisateurs'
   user?: User | null
-  logout?: () => void
 }
 
-export default function SidebarClient({ active, user, logout }: Props) {
-
+export default function SidebarClient({ active, user }: Props) {
   const menu = [
     { key: 'commandes', label: 'Commandes', icon: GamepadIcon, href: '/dashboard' },
     { key: 'jeux', label: 'Jeux', icon: GamepadIcon, href: '/dashboard/jeux' },
     { key: 'offres', label: 'Offres', icon: Package, href: '/dashboard/offres' },
-    { key: 'utilisateurs', label: 'Utilisateurs', icon: Users, href: '/dashboard/utilisateurs' },
+    { key: 'utilisateurs', label: 'Utilisateurs', icon: Users, href: '/dashboard/utilisateurs' }
   ]
 
   return (
@@ -58,14 +57,13 @@ export default function SidebarClient({ active, user, logout }: Props) {
       </nav>
 
       <div className="p-4 border-t border-white/5">
-
-        <div className='px-3 mb-1'>
+        <div className="px-3 mb-1">
           <p className="text-white text-xs font-medium">{user?.email}</p>
           <p className="text-slate-500 text-xs">Connecté</p>
         </div>
 
         <button
-          onClick={async () => logout?.()}
+          onClick={logout}
           className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-all"
         >
           <LogOut size={14} />

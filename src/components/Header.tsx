@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { User } from "@supabase/supabase-js";
+import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
+import { User } from '@supabase/supabase-js'
 
 interface Props {
   user: User | null
@@ -12,7 +12,7 @@ export default function Header({ user }: Props) {
   return (
     <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Image
             src="/signature.png"
             alt="Rabbit Shop"
@@ -23,22 +23,13 @@ export default function Header({ user }: Props) {
           <span className="text-white font-bold text-lg">Rabbit Shop</span>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          <a
-            href="#jeux"
-            className="text-slate-400 hover:text-white text-sm transition-colors"
-          >
+          <a href="#jeux" className="text-slate-400 hover:text-white text-sm transition-colors">
             Jeux
           </a>
-          <a
-            href="#comment"
-            className="text-slate-400 hover:text-white text-sm transition-colors"
-          >
+          <a href="#comment" className="text-slate-400 hover:text-white text-sm transition-colors">
             Comment ça marche
           </a>
-          <a
-            href="#faq"
-            className="text-slate-400 hover:text-white text-sm transition-colors"
-          >
+          <a href="#faq" className="text-slate-400 hover:text-white text-sm transition-colors">
             FAQ
           </a>
         </nav>
@@ -69,5 +60,5 @@ export default function Header({ user }: Props) {
         </div>
       </div>
     </header>
-  );
+  )
 }

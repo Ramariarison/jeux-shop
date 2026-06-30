@@ -34,12 +34,12 @@ export default function UtilisateursPage() {
     setLoading(false)
   }
 
-  useEffect(() => { 
+  useEffect(() => {
     async function init() {
       await fetchUsers()
     }
-    init() 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function toggleRole(user: User) {
@@ -50,12 +50,12 @@ export default function UtilisateursPage() {
     setUpdating(null)
   }
 
-  const usersFiltres = filtreRole === 'tous' ? users : users.filter(u => u.role === filtreRole)
+  const usersFiltres = filtreRole === 'tous' ? users : users.filter((u) => u.role === filtreRole)
 
   const stats = {
     total: users.length,
-    admins: users.filter(u => u.role === 'admin').length,
-    clients: users.filter(u => u.role === 'client').length,
+    admins: users.filter((u) => u.role === 'admin').length,
+    clients: users.filter((u) => u.role === 'client').length
   }
 
   return (
@@ -141,20 +141,30 @@ export default function UtilisateursPage() {
                   {user.telephone || '—'}
                 </div>
                 <div className="col-span-1">
-                  <Badge className={`text-xs border ${
-                    user.role === 'admin'
-                      ? 'bg-purple-500/15 text-purple-300 border-purple-500/25'
-                      : 'bg-white/5 text-slate-400 border-white/10'
-                  }`}>
+                  <Badge
+                    className={`text-xs border ${
+                      user.role === 'admin'
+                        ? 'bg-purple-500/15 text-purple-300 border-purple-500/25'
+                        : 'bg-white/5 text-slate-400 border-white/10'
+                    }`}
+                  >
                     {user.role === 'admin' ? (
-                      <span className="flex items-center gap-1"><Shield size={10} /> Admin</span>
+                      <span className="flex items-center gap-1">
+                        <Shield size={10} /> Admin
+                      </span>
                     ) : (
-                      <span className="flex items-center gap-1"><UserIcon size={10} /> Client</span>
+                      <span className="flex items-center gap-1">
+                        <UserIcon size={10} /> Client
+                      </span>
                     )}
                   </Badge>
                 </div>
                 <div className="col-span-1 text-slate-500 text-xs">
-                  {new Date(user.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  {new Date(user.created_at).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                  })}
                 </div>
                 <div className="col-span-2 flex justify-end">
                   <button
