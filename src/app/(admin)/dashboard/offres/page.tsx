@@ -60,13 +60,13 @@ export default function OffresPage() {
 
   useEffect(() => {
     async function init() {
-      await fetchData() 
+      await fetchData()
     }
     init()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const jeuSelectionne = jeux.find(j => j.id === jeuActif)
+  const jeuSelectionne = jeux.find((j) => j.id === jeuActif)
 
   function openCreate() {
     setOffreEdit(null)
@@ -98,7 +98,7 @@ export default function OffresPage() {
       quantite_jetons: parseInt(quantite),
       prix_ariary: parseFloat(prixAriary),
       prix_usd: parseFloat(prixUsd),
-      actif,
+      actif
     }
 
     if (offreEdit) {
@@ -128,8 +128,12 @@ export default function OffresPage() {
             <h1 className="text-2xl font-bold text-white">Offres</h1>
             <p className="text-slate-500 text-sm mt-0.5">Gère les offres de jetons par jeu</p>
           </div>
-          <Button onClick={openCreate} className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl" disabled={!jeuActif}>
-            <Plus size={16} className="mr-2" /> Ajouter une offre
+          <Button
+            onClick={openCreate}
+            className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl"
+            disabled={!jeuActif}
+          >
+            <Plus size={16} /> Ajouter une offre
           </Button>
         </div>
 
@@ -151,9 +155,11 @@ export default function OffresPage() {
                 >
                   <img src={jeu.logo_url} alt={jeu.nom} className="w-5 h-5 object-contain" />
                   {jeu.nom}
-                  <span className={`text-xs px-1.5 py-0.5 rounded-md ${
-                    jeuActif === jeu.id ? 'bg-white/20' : 'bg-white/10'
-                  }`}>
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-md ${
+                      jeuActif === jeu.id ? 'bg-white/20' : 'bg-white/10'
+                    }`}
+                  >
                     {jeu.offres.length}
                   </span>
                 </button>
@@ -161,8 +167,8 @@ export default function OffresPage() {
             </div>
 
             {/* Liste offres du jeu sélectionné */}
-            {jeuSelectionne && (
-              jeuSelectionne.offres.length === 0 ? (
+            {jeuSelectionne &&
+              (jeuSelectionne.offres.length === 0 ? (
                 <div className="text-center text-slate-500 py-20">
                   Aucune offre pour {jeuSelectionne.nom}
                 </div>
@@ -179,35 +185,51 @@ export default function OffresPage() {
                   {jeuSelectionne.offres
                     .sort((a, b) => a.prix_ariary - b.prix_ariary)
                     .map((offre, i) => (
-                    <div key={offre.id} className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
-                      i !== jeuSelectionne.offres.length - 1 ? 'border-b border-white/5' : ''
-                    }`}>
-                      <div className="col-span-4 text-white font-medium text-sm">{offre.label}</div>
-                      <div className="col-span-2 text-slate-300 text-sm">{offre.quantite_jetons.toLocaleString()}</div>
-                      <div className="col-span-2 text-white text-sm font-semibold">{offre.prix_ariary.toLocaleString()} Ar</div>
-                      <div className="col-span-2 text-slate-400 text-sm">${offre.prix_usd}</div>
-                      <div className="col-span-1">
-                        <div className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium border ${
-                          offre.actif
-                            ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25'
-                            : 'bg-slate-500/15 text-slate-400 border-slate-500/25'
-                        }`}>
-                          {offre.actif ? 'Actif' : 'Inactif'}
+                      <div
+                        key={offre.id}
+                        className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
+                          i !== jeuSelectionne.offres.length - 1 ? 'border-b border-white/5' : ''
+                        }`}
+                      >
+                        <div className="col-span-4 text-white font-medium text-sm">
+                          {offre.label}
+                        </div>
+                        <div className="col-span-2 text-slate-300 text-sm">
+                          {offre.quantite_jetons.toLocaleString()}
+                        </div>
+                        <div className="col-span-2 text-white text-sm font-semibold">
+                          {offre.prix_ariary.toLocaleString()} Ar
+                        </div>
+                        <div className="col-span-2 text-slate-400 text-sm">${offre.prix_usd}</div>
+                        <div className="col-span-1">
+                          <div
+                            className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium border ${
+                              offre.actif
+                                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25'
+                                : 'bg-slate-500/15 text-slate-400 border-slate-500/25'
+                            }`}
+                          >
+                            {offre.actif ? 'Actif' : 'Inactif'}
+                          </div>
+                        </div>
+                        <div className="col-span-1 flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => openEdit(offre)}
+                            className="text-slate-400 hover:text-white transition-colors"
+                          >
+                            <Pencil size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(offre.id)}
+                            className="text-red-400 hover:text-red-300 transition-colors"
+                          >
+                            <Trash2 size={14} />
+                          </button>
                         </div>
                       </div>
-                      <div className="col-span-1 flex items-center justify-end gap-2">
-                        <button onClick={() => openEdit(offre)} className="text-slate-400 hover:text-white transition-colors">
-                          <Pencil size={14} />
-                        </button>
-                        <button onClick={() => handleDelete(offre.id)} className="text-red-400 hover:text-red-300 transition-colors">
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
-              )
-            )}
+              ))}
           </>
         )}
       </main>
@@ -218,42 +240,76 @@ export default function OffresPage() {
           <div className="bg-[#13131f] border border-white/10 rounded-2xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
               <h3 className="text-white font-semibold">
-                {offreEdit ? 'Modifier l\'offre' : 'Nouvelle offre'} — {jeuSelectionne?.nom}
+                {offreEdit ? "Modifier l'offre" : 'Nouvelle offre'} — {jeuSelectionne?.nom}
               </h3>
-              <button onClick={() => setModalOpen(false)} className="text-slate-500 hover:text-white">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="text-slate-500 hover:text-white"
+              >
                 <X size={20} />
               </button>
             </div>
             <div className="p-6 space-y-4">
               <div>
                 <Label className="text-slate-300 text-sm mb-1.5 block">Label</Label>
-                <Input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="100 Diamonds"
-                  className="bg-white/10 border-white/20 text-white rounded-xl h-11" />
+                <Input
+                  value={label}
+                  onChange={(e) => setLabel(e.target.value)}
+                  placeholder="100 Diamonds"
+                  className="bg-white/10 border-white/20 text-white rounded-xl h-11"
+                />
               </div>
               <div>
                 <Label className="text-slate-300 text-sm mb-1.5 block">Quantité de jetons</Label>
-                <Input type="number" value={quantite} onChange={(e) => setQuantite(e.target.value)} placeholder="100"
-                  className="bg-white/10 border-white/20 text-white rounded-xl h-11" />
+                <Input
+                  type="number"
+                  value={quantite}
+                  onChange={(e) => setQuantite(e.target.value)}
+                  placeholder="100"
+                  className="bg-white/10 border-white/20 text-white rounded-xl h-11"
+                />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label className="text-slate-300 text-sm mb-1.5 block">Prix Ariary</Label>
-                  <Input type="number" value={prixAriary} onChange={(e) => setPrixAriary(e.target.value)} placeholder="5000"
-                    className="bg-white/10 border-white/20 text-white rounded-xl h-11" />
+                  <Input
+                    type="number"
+                    value={prixAriary}
+                    onChange={(e) => setPrixAriary(e.target.value)}
+                    placeholder="5000"
+                    className="bg-white/10 border-white/20 text-white rounded-xl h-11"
+                  />
                 </div>
                 <div>
                   <Label className="text-slate-300 text-sm mb-1.5 block">Prix USD</Label>
-                  <Input type="number" step="0.01" value={prixUsd} onChange={(e) => setPrixUsd(e.target.value)} placeholder="1.09"
-                    className="bg-white/10 border-white/20 text-white rounded-xl h-11" />
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={prixUsd}
+                    onChange={(e) => setPrixUsd(e.target.value)}
+                    placeholder="1.09"
+                    className="bg-white/10 border-white/20 text-white rounded-xl h-11"
+                  />
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <input type="checkbox" id="actif-offre" checked={actif} onChange={(e) => setActif(e.target.checked)}
-                  className="w-4 h-4 rounded accent-purple-600" />
-                <Label htmlFor="actif-offre" className="text-slate-300 text-sm">Offre active</Label>
+                <input
+                  type="checkbox"
+                  id="actif-offre"
+                  checked={actif}
+                  onChange={(e) => setActif(e.target.checked)}
+                  className="w-4 h-4 rounded accent-purple-600"
+                />
+                <Label htmlFor="actif-offre" className="text-slate-300 text-sm">
+                  Offre active
+                </Label>
               </div>
-              <Button onClick={handleSave} disabled={saving} className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl h-11">
-                {saving ? 'Enregistrement...' : offreEdit ? 'Mettre à jour' : 'Créer l\'offre'}
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl h-11"
+              >
+                {saving ? 'Enregistrement...' : offreEdit ? 'Mettre à jour' : "Créer l'offre"}
               </Button>
             </div>
           </div>
