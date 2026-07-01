@@ -122,7 +122,7 @@ export default function OffresPage() {
     <div className="min-h-screen bg-[#0f0f1a]">
       <SidebarClient active="offres" user={user} />
 
-      <main className="ml-64 p-8">
+      <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Offres</h1>
@@ -133,7 +133,9 @@ export default function OffresPage() {
             className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl"
             disabled={!jeuActif}
           >
-            <Plus size={16} /> Ajouter une offre
+            <Plus size={16} className="mr-1 md:mr-2" />
+            <span className="hidden sm:inline">Ajouter une offre</span>
+            <span className="sm:hidden">Ajouter</span>
           </Button>
         </div>
 
@@ -166,69 +168,128 @@ export default function OffresPage() {
               ))}
             </div>
 
-            {/* Liste offres du jeu sélectionné */}
+            {/* Liste offres */}
             {jeuSelectionne &&
               (jeuSelectionne.offres.length === 0 ? (
                 <div className="text-center text-slate-500 py-20">
                   Aucune offre pour {jeuSelectionne.nom}
                 </div>
               ) : (
-                <div className="bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
-                  <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
-                    <div className="col-span-4">Offre</div>
-                    <div className="col-span-2">Jetons</div>
-                    <div className="col-span-2">Prix Ariary</div>
-                    <div className="col-span-2">Prix USD</div>
-                    <div className="col-span-1">Statut</div>
-                    <div className="col-span-1 text-right">Actions</div>
-                  </div>
-                  {jeuSelectionne.offres
-                    .sort((a, b) => a.prix_ariary - b.prix_ariary)
-                    .map((offre, i) => (
-                      <div
-                        key={offre.id}
-                        className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
-                          i !== jeuSelectionne.offres.length - 1 ? 'border-b border-white/5' : ''
-                        }`}
-                      >
-                        <div className="col-span-4 text-white font-medium text-sm">
-                          {offre.label}
-                        </div>
-                        <div className="col-span-2 text-slate-300 text-sm">
-                          {offre.quantite_jetons.toLocaleString()}
-                        </div>
-                        <div className="col-span-2 text-white text-sm font-semibold">
-                          {offre.prix_ariary.toLocaleString()} Ar
-                        </div>
-                        <div className="col-span-2 text-slate-400 text-sm">${offre.prix_usd}</div>
-                        <div className="col-span-1">
-                          <div
-                            className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium border ${
-                              offre.actif
-                                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25'
-                                : 'bg-slate-500/15 text-slate-400 border-slate-500/25'
-                            }`}
-                          >
-                            {offre.actif ? 'Actif' : 'Inactif'}
+                <>
+                  {/* Vue mobile : cards */}
+                  <div className="md:hidden space-y-3">
+                    {jeuSelectionne.offres
+                      .sort((a, b) => a.prix_ariary - b.prix_ariary)
+                      .map((offre) => (
+                        <div
+                          key={offre.id}
+                          className="bg-[#13131f] border border-white/5 rounded-2xl p-4"
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <p className="text-white font-medium text-sm">{offre.label}</p>
+                              <p className="text-slate-400 text-xs">
+                                {offre.quantite_jetons.toLocaleString()} jetons
+                              </p>
+                            </div>
+                            <div
+                              className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium border ${
+                                offre.actif
+                                  ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25'
+                                  : 'bg-slate-500/15 text-slate-400 border-slate-500/25'
+                              }`}
+                            >
+                              {offre.actif ? 'Actif' : 'Inactif'}
+                            </div>
+                          </div>
+                          <div className="flex justify-between md:grid grid-cols-2 gap-2 text-xs mb-3">
+                            <div>
+                              <p className="text-slate-500">Prix Ariary</p>
+                              <p className="text-white font-semibold">
+                                {offre.prix_ariary.toLocaleString()} Ar
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-slate-500">Prix USD</p>
+                              <p className="text-white">${offre.prix_usd}</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 border-t border-white/5 pt-3">
+                            <button
+                              onClick={() => openEdit(offre)}
+                              className="flex-1 flex items-center justify-center gap-1.5 bg-white/5 hover:bg-white/10 text-slate-300 text-sm py-2 rounded-xl transition-all"
+                            >
+                              <Pencil size={14} /> Modifier
+                            </button>
+                            <button
+                              onClick={() => handleDelete(offre.id)}
+                              className="flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 rounded-xl transition-all"
+                            >
+                              <Trash2 size={14} />
+                            </button>
                           </div>
                         </div>
-                        <div className="col-span-1 flex items-center justify-end gap-2">
-                          <button
-                            onClick={() => openEdit(offre)}
-                            className="text-slate-400 hover:text-white transition-colors"
-                          >
-                            <Pencil size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(offre.id)}
-                            className="text-red-400 hover:text-red-300 transition-colors"
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                      ))}
+                  </div>
+
+                  {/* Vue desktop : tableau */}
+                  <div className="hidden md:block bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
+                    <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
+                      <div className="col-span-4">Offre</div>
+                      <div className="col-span-2">Jetons</div>
+                      <div className="col-span-2">Prix Ariary</div>
+                      <div className="col-span-2">Prix USD</div>
+                      <div className="col-span-1">Statut</div>
+                      <div className="col-span-1 text-right">Actions</div>
+                    </div>
+                    {jeuSelectionne.offres
+                      .sort((a, b) => a.prix_ariary - b.prix_ariary)
+                      .map((offre, i) => (
+                        <div
+                          key={offre.id}
+                          className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
+                            i !== jeuSelectionne.offres.length - 1 ? 'border-b border-white/5' : ''
+                          }`}
+                        >
+                          <div className="col-span-4 text-white font-medium text-sm">
+                            {offre.label}
+                          </div>
+                          <div className="col-span-2 text-slate-300 text-sm">
+                            {offre.quantite_jetons.toLocaleString()}
+                          </div>
+                          <div className="col-span-2 text-white text-sm font-semibold">
+                            {offre.prix_ariary.toLocaleString()} Ar
+                          </div>
+                          <div className="col-span-2 text-slate-400 text-sm">${offre.prix_usd}</div>
+                          <div className="col-span-1">
+                            <div
+                              className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium border ${
+                                offre.actif
+                                  ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25'
+                                  : 'bg-slate-500/15 text-slate-400 border-slate-500/25'
+                              }`}
+                            >
+                              {offre.actif ? 'Actif' : 'Inactif'}
+                            </div>
+                          </div>
+                          <div className="col-span-1 flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => openEdit(offre)}
+                              className="text-slate-400 hover:text-white transition-colors"
+                            >
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(offre.id)}
+                              className="text-red-400 hover:text-red-300 transition-colors"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                </div>
+                      ))}
+                  </div>
+                </>
               ))}
           </>
         )}

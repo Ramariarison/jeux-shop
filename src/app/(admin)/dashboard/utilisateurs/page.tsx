@@ -62,7 +62,7 @@ export default function UtilisateursPage() {
     <div className="min-h-screen bg-[#0f0f1a]">
       <SidebarClient active="utilisateurs" user={user} />
 
-      <main className="ml-64 p-8">
+      <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Utilisateurs</h1>
@@ -72,17 +72,17 @@ export default function UtilisateursPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white/5 border border-white/5 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm mb-1">Total</p>
-            <p className="text-3xl font-bold text-white">{stats.total}</p>
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 md:p-5">
+            <p className="text-slate-400 text-xs md:text-sm mb-1">Total</p>
+            <p className="text-2xl md:text-3xl font-bold text-white">{stats.total}</p>
           </div>
-          <div className="bg-emerald-500/10 border border-white/5 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm mb-1">Clients</p>
-            <p className="text-3xl font-bold text-emerald-300">{stats.clients}</p>
+          <div className="bg-emerald-500/10 border border-white/5 rounded-2xl p-4 md:p-5">
+            <p className="text-slate-400 text-xs md:text-sm mb-1">Clients</p>
+            <p className="text-2xl md:text-3xl font-bold text-emerald-300">{stats.clients}</p>
           </div>
-          <div className="bg-purple-500/10 border border-white/5 rounded-2xl p-5">
-            <p className="text-slate-400 text-sm mb-1">Admins</p>
-            <p className="text-3xl font-bold text-purple-300">{stats.admins}</p>
+          <div className="bg-purple-500/10 border border-white/5 rounded-2xl p-4 md:p-5">
+            <p className="text-slate-400 text-xs md:text-sm mb-1">Admins</p>
+            <p className="text-2xl md:text-3xl font-bold text-purple-300">{stats.admins}</p>
           </div>
         </div>
 
@@ -109,83 +109,152 @@ export default function UtilisateursPage() {
         ) : usersFiltres.length === 0 ? (
           <div className="text-center text-slate-500 py-20">Aucun utilisateur</div>
         ) : (
-          <div className="bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
-            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
-              <div className="col-span-3">Nom</div>
-              <div className="col-span-3">Email</div>
-              <div className="col-span-2">Téléphone</div>
-              <div className="col-span-1">Rôle</div>
-              <div className="col-span-1">Inscrit le</div>
-              <div className="col-span-2 text-right">Actions</div>
+          <>
+            {/* Vue mobile : cards */}
+            <div className="md:hidden space-y-3">
+              {usersFiltres.map((user) => (
+                <div key={user.id} className="bg-[#13131f] border border-white/5 rounded-2xl p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-sm text-purple-300 font-medium shrink-0">
+                        {user.nom?.charAt(0)?.toUpperCase() ?? '?'}
+                      </div>
+                      <div>
+                        <p className="text-white text-sm font-medium">{user.nom}</p>
+                        <p className="text-slate-500 text-xs">{user.email}</p>
+                      </div>
+                    </div>
+                    <Badge
+                      className={`text-xs border ${
+                        user.role === 'admin'
+                          ? 'bg-purple-500/15 text-purple-300 border-purple-500/25'
+                          : 'bg-white/5 text-slate-400 border-white/10'
+                      }`}
+                    >
+                      {user.role === 'admin' ? (
+                        <span className="flex items-center gap-1">
+                          <Shield size={10} /> Admin
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <UserIcon size={10} /> Client
+                        </span>
+                      )}
+                    </Badge>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                    <div className="flex items-center gap-1.5 text-slate-400">
+                      <Phone size={11} className="text-slate-500" />
+                      {user.telephone || '—'}
+                    </div>
+                    <div className="text-slate-500">
+                      Inscrit le{' '}
+                      {new Date(user.created_at).toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </div>
+                  </div>
+                  <div className="border-t border-white/5 pt-3">
+                    <button
+                      onClick={() => toggleRole(user)}
+                      disabled={updating === user.id}
+                      className={`w-full text-xs px-3 py-2 rounded-xl border transition-all ${
+                        user.role === 'admin'
+                          ? 'bg-red-500/10 hover:bg-red-500/20 text-red-300 border-red-500/20'
+                          : 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border-purple-500/20'
+                      }`}
+                    >
+                      {updating === user.id
+                        ? '...'
+                        : user.role === 'admin'
+                          ? 'Retirer admin'
+                          : 'Rendre admin'}
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {usersFiltres.map((user, i) => (
-              <div
-                key={user.id}
-                className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
-                  i !== usersFiltres.length - 1 ? 'border-b border-white/5' : ''
-                }`}
-              >
-                <div className="col-span-3 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-xs text-purple-300 font-medium shrink-0">
-                    {user.nom?.charAt(0)?.toUpperCase() ?? '?'}
-                  </div>
-                  <p className="text-white text-sm font-medium truncate">{user.nom}</p>
-                </div>
-                <div className="col-span-3 flex items-center gap-1.5 text-slate-300 text-sm truncate">
-                  <Mail size={12} className="text-slate-500 shrink-0" />
-                  {user.email}
-                </div>
-                <div className="col-span-2 flex items-center gap-1.5 text-slate-300 text-sm">
-                  <Phone size={12} className="text-slate-500 shrink-0" />
-                  {user.telephone || '—'}
-                </div>
-                <div className="col-span-1">
-                  <Badge
-                    className={`text-xs border ${
-                      user.role === 'admin'
-                        ? 'bg-purple-500/15 text-purple-300 border-purple-500/25'
-                        : 'bg-white/5 text-slate-400 border-white/10'
-                    }`}
-                  >
-                    {user.role === 'admin' ? (
-                      <span className="flex items-center gap-1">
-                        <Shield size={10} /> Admin
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1">
-                        <UserIcon size={10} /> Client
-                      </span>
-                    )}
-                  </Badge>
-                </div>
-                <div className="col-span-1 text-slate-500 text-xs">
-                  {new Date(user.created_at).toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                  })}
-                </div>
-                <div className="col-span-2 flex justify-end">
-                  <button
-                    onClick={() => toggleRole(user)}
-                    disabled={updating === user.id}
-                    className={`text-xs px-3 py-1.5 rounded-xl border transition-all ${
-                      user.role === 'admin'
-                        ? 'bg-red-500/10 hover:bg-red-500/20 text-red-300 border-red-500/20'
-                        : 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border-purple-500/20'
-                    }`}
-                  >
-                    {updating === user.id
-                      ? '...'
-                      : user.role === 'admin'
-                        ? 'Retirer admin'
-                        : 'Rendre admin'}
-                  </button>
-                </div>
+            {/* Vue desktop : tableau */}
+            <div className="hidden md:block bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
+              <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
+                <div className="col-span-3">Nom</div>
+                <div className="col-span-3">Email</div>
+                <div className="col-span-2">Téléphone</div>
+                <div className="col-span-1">Rôle</div>
+                <div className="col-span-1">Inscrit le</div>
+                <div className="col-span-2 text-right">Actions</div>
               </div>
-            ))}
-          </div>
+              {usersFiltres.map((user, i) => (
+                <div
+                  key={user.id}
+                  className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${
+                    i !== usersFiltres.length - 1 ? 'border-b border-white/5' : ''
+                  }`}
+                >
+                  <div className="col-span-3 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-purple-600/20 border border-purple-500/20 flex items-center justify-center text-xs text-purple-300 font-medium shrink-0">
+                      {user.nom?.charAt(0)?.toUpperCase() ?? '?'}
+                    </div>
+                    <p className="text-white text-sm font-medium truncate">{user.nom}</p>
+                  </div>
+                  <div className="col-span-3 flex items-center gap-1.5 text-slate-300 text-sm truncate">
+                    <Mail size={12} className="text-slate-500 shrink-0" />
+                    {user.email}
+                  </div>
+                  <div className="col-span-2 flex items-center gap-1.5 text-slate-300 text-sm">
+                    <Phone size={12} className="text-slate-500 shrink-0" />
+                    {user.telephone || '—'}
+                  </div>
+                  <div className="col-span-1">
+                    <Badge
+                      className={`text-xs border ${
+                        user.role === 'admin'
+                          ? 'bg-purple-500/15 text-purple-300 border-purple-500/25'
+                          : 'bg-white/5 text-slate-400 border-white/10'
+                      }`}
+                    >
+                      {user.role === 'admin' ? (
+                        <span className="flex items-center gap-1">
+                          <Shield size={10} /> Admin
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <UserIcon size={10} /> Client
+                        </span>
+                      )}
+                    </Badge>
+                  </div>
+                  <div className="col-span-1 text-slate-500 text-xs">
+                    {new Date(user.created_at).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric'
+                    })}
+                  </div>
+                  <div className="col-span-2 flex justify-end">
+                    <button
+                      onClick={() => toggleRole(user)}
+                      disabled={updating === user.id}
+                      className={`text-xs px-3 py-1.5 rounded-xl border transition-all ${
+                        user.role === 'admin'
+                          ? 'bg-red-500/10 hover:bg-red-500/20 text-red-300 border-red-500/20'
+                          : 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border-purple-500/20'
+                      }`}
+                    >
+                      {updating === user.id
+                        ? '...'
+                        : user.role === 'admin'
+                          ? 'Retirer admin'
+                          : 'Rendre admin'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </main>
     </div>
