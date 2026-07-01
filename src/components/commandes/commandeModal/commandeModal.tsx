@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { X, CreditCard, PhoneCall } from 'lucide-react'
+import { X, CreditCard, PhoneCall, BadgeCheck } from 'lucide-react'
 import { createCommande } from '@/services/commande.service'
 
 type Offre = {
@@ -101,42 +101,60 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   // Etape 2 : confirmation
   if (etape === 2) {
     return (
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div className="bg-slate-800 border border-white/20 rounded-2xl p-8 w-full max-w-md text-center">
-          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">✅</span>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 shadow-2xl">
+          <div className="border-b border-white/10 p-6 text-center">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-500/10 border border-green-500/20">
+              <BadgeCheck className="h-9 w-9 text-green-400" strokeWidth={2.2} />
+            </div>
+
+            <h2 className="text-2xl font-bold text-white">Commande enregistrée</h2>
+
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Votre commande a bien été prise en compte. Elle sera vérifiée par un administrateur
+              avant la livraison.
+            </p>
           </div>
-          <h3 className="text-white text-xl font-bold mb-2">Commande envoyée !</h3>
-          <p className="text-slate-400 text-sm mb-6">
-            Votre commande a été reçue. Un administrateur va vérifier votre paiement et livrer vos
-            jetons dans les plus brefs délais.
-          </p>
-          <div className="bg-white/5 rounded-xl p-4 text-left mb-6 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Jeu</span>
-              <span className="text-white font-medium">{jeu.nom}</span>
+
+          <div className="p-6">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
+              <div className="flex justify-between py-2">
+                <span className="text-slate-400">Jeu</span>
+                <span className="font-medium text-white">{jeu.nom}</span>
+              </div>
+
+              <div className="flex justify-between py-2">
+                <span className="text-slate-400">Offre</span>
+                <span className="font-medium text-white">{offre.label}</span>
+              </div>
+
+              <div className="flex justify-between py-2">
+                <span className="text-slate-400">Montant</span>
+                <span className="font-semibold text-green-400">
+                  {offre.prix_ariary.toLocaleString()} Ar
+                </span>
+              </div>
+
+              <div className="flex justify-between py-2">
+                <span className="text-slate-400">ID Joueur</span>
+                <span className="font-medium text-white">{playerId}</span>
+              </div>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Offre</span>
-              <span className="text-white font-medium">{offre.label}</span>
+
+            <div className="mt-5 rounded-xl border border-purple-500/20 bg-purple-500/10 p-4">
+              <p className="text-sm text-slate-300 leading-6">
+                Un email vous sera envoyé dès que votre paiement aura été vérifié. Vous pourrez
+                ensuite recevoir votre commande.
+              </p>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Montant</span>
-              <span className="text-white font-medium">
-                {offre.prix_ariary.toLocaleString()} Ar
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">ID Joueur</span>
-              <span className="text-white font-medium">{playerId}</span>
-            </div>
+
+            <Button
+              onClick={onClose}
+              className="mt-6 h-11 w-full rounded-xl bg-purple-600 hover:bg-purple-700"
+            >
+              Fermer
+            </Button>
           </div>
-          <Button
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl"
-            onClick={onClose}
-          >
-            Fermer
-          </Button>
         </div>
       </div>
     )
