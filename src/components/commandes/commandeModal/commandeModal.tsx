@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { X, CreditCard, PhoneCall } from 'lucide-react'
+import { createCommande } from '@/services/commande.service'
 
 type Offre = {
   id: string
@@ -28,8 +28,6 @@ type Props = {
 }
 
 export default function CommandeModal({ offre, jeu, onClose }: Props) {
-  const supabase = createClient()
-
   const [playerId, setPlayerId] = useState('')
   const [methodePaiement, setMethodePaiement] = useState<'mvola' | 'airtel' | 'orange'>('mvola')
   const [referencePaiement, setReferencePaiement] = useState('')
@@ -40,14 +38,16 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   const numerosPaiement = {
     mvola: '034 25 776 65',
     airtel: '033 XX XXX XX',
-    orange: '032 XX XXX XX',
+    orange: '032 XX XXX XX'
   }
 
-  {/* Début de la nouvelle fonctionnalité */}
+  {
+    /* Début de la nouvelle fonctionnalité */
+  }
   const codesUSSD = {
     mvola: `#111*1*1*0342577665*${offre.prix_ariary}#`,
     airtel: '',
-    orange: '',
+    orange: ''
   }
 
   function procederPaiement() {
@@ -62,7 +62,9 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
 
     window.location.href = `tel:${encoded}`
   }
-  {/* fin du nouvelle fonctionnalité */}
+  {
+    /* fin du nouvelle fonctionnalité */
+  }
 
   async function handleSubmit() {
     if (!playerId.trim()) {
@@ -77,46 +79,17 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
     setLoading(true)
     setError('')
 
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-      window.location.href = '/login'
-      return
-    }
-
     // Créer la commande
-    const { data: commande, error: errCommande } = await supabase
-      .from('commandes')
-      .insert({
-        user_id: user.id,
-        offre_id: offre.id,
-        player_id_jeu: playerId,
-        montant_ariary: offre.prix_ariary,
-        montant_usd: offre.prix_usd,
-        statut: 'en_attente_paiement',
-      })
-      .select()
-      .single()
+    const result = await createCommande({
+      offre: offre,
+      jeu: jeu,
+      playerId: playerId,
+      methodePaiement: methodePaiement,
+      referencePaiement: referencePaiement
+    })
 
-    if (errCommande || !commande) {
-      setError('Erreur lors de la création de la commande')
-      setLoading(false)
-      return
-    }
-
-    // Enregistrer le paiement
-    const { error: errPaiement } = await supabase
-      .from('paiements')
-      .insert({
-        commande_id: commande.id,
-        methode: methodePaiement,
-        reference_mvola: referencePaiement,
-        statut: 'en_attente',
-        montant: offre.prix_ariary,
-      })
-
-    if (errPaiement) {
-      setError('Erreur lors de l\'enregistrement du paiement')
+    if (!result.success) {
+      setError(result.error)
       setLoading(false)
       return
     }
@@ -135,8 +108,8 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
           </div>
           <h3 className="text-white text-xl font-bold mb-2">Commande envoyée !</h3>
           <p className="text-slate-400 text-sm mb-6">
-            Votre commande a été reçue. Un administrateur va vérifier votre paiement
-            et livrer vos jetons dans les plus brefs délais.
+            Votre commande a été reçue. Un administrateur va vérifier votre paiement et livrer vos
+            jetons dans les plus brefs délais.
           </p>
           <div className="bg-white/5 rounded-xl p-4 text-left mb-6 space-y-2">
             <div className="flex justify-between text-sm">
@@ -149,7 +122,9 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Montant</span>
-              <span className="text-white font-medium">{offre.prix_ariary.toLocaleString()} Ar</span>
+              <span className="text-white font-medium">
+                {offre.prix_ariary.toLocaleString()} Ar
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">ID Joueur</span>
@@ -171,23 +146,20 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-slate-800 border border-white/20 rounded-2xl w-full max-w-md">
-
         {/* Header modal */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
             <h3 className="text-white font-semibold text-lg">Commander</h3>
-            <p className="text-slate-400 text-sm">{jeu.nom} {offre.label}</p>
+            <p className="text-slate-400 text-sm">
+              {jeu.nom} {offre.label}
+            </p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white transition-colors"
-          >
+          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
 
         <div className="p-6 space-y-3">
-
           {error && (
             <div className="bg-red-500/20 border border-red-500/50 text-red-200 text-sm p-3 rounded-xl">
               {error}
@@ -205,9 +177,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
               onChange={(e) => setPlayerId(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-slate-500 rounded-xl h-11"
             />
-            <p className="text-slate-500 text-xs mt-1">
-              Trouvez votre ID dans le profil du jeu
-            </p>
+            <p className="text-slate-500 text-xs mt-1">Trouvez votre ID dans le profil du jeu</p>
           </div>
 
           {/* Méthode de paiement */}
@@ -234,7 +204,6 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
 
           {/* Instructions paiement */}
           <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-
             <div className="flex items-center gap-2 mb-2">
               <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-emerald-400" />
@@ -245,18 +214,12 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
                   Paiement {methodePaiement.toUpperCase()}
                 </p>
 
-                <p className="text-xs text-slate-400">
-                  Transférez exactement le montant indiqué
-                </p>
+                <p className="text-xs text-slate-400">Transférez exactement le montant indiqué</p>
               </div>
             </div>
 
-
             <div className="rounded-xl bg-black/20 p-3 mb-2">
-
-              <p className="text-xs text-slate-400 mb-1">
-                Numéro destinataire
-              </p>
+              <p className="text-xs text-slate-400 mb-1">Numéro destinataire</p>
 
               <p className="text-lg font-bold text-white tracking-wide">
                 {numerosPaiement[methodePaiement]}
@@ -265,9 +228,7 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
               <p className="mt-2 text-xs text-emerald-300">
                 Montant : {offre.prix_ariary.toLocaleString()} Ar
               </p>
-
             </div>
-
 
             <Button
               type="button"
@@ -277,7 +238,6 @@ export default function CommandeModal({ offre, jeu, onClose }: Props) {
               <PhoneCall className="mr-2 h-4 w-4" />
               Procéder au paiement
             </Button>
-
           </div>
 
           {/* Référence paiement */}
