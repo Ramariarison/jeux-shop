@@ -15,17 +15,20 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options))
-        },
-      },
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        }
+      }
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
 
   const publicRoutes = ['/login', '/register']
-  const isPublicRoute = publicRoutes.some(r => pathname.startsWith(r))
+  const isPublicRoute = publicRoutes.some((r) => pathname.startsWith(r))
 
   const openRoutes = ['/', '/catalogue']
   const isOpenRoute = openRoutes.includes(pathname)
@@ -58,14 +61,14 @@ export async function middleware(request: NextRequest) {
 
   // Déjà connecté → redirige vers /catalogue ou /dashboard si tente /login ou /register
   if (user && isPublicRoute) {
-    return NextResponse.redirect(new URL(role === 'admin' ? '/dashboard' : '/catalogue', request.url))
+    return NextResponse.redirect(
+      new URL(role === 'admin' ? '/dashboard' : '/catalogue', request.url)
+    )
   }
 
   return supabaseResponse
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|logos|.*\\.png$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|logos|.*\\.png$).*)']
 }

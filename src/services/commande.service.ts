@@ -8,6 +8,115 @@ import {
   updateCommandeStatut,
   updatePaiementStatut
 } from '@/repositories/commande.repository'
+import { sendNouvelleCommandeEmail } from './email/email.service'
+
+type Offre = {
+  id: string
+  label: string
+  quantite_jetons: number
+  prix_ariary: number
+  prix_usd: number
+}
+
+type Jeu = {
+  id: string
+  nom: string
+  slug: string
+}
+
+type Props = {
+  offre: Offre
+  jeu: Jeu
+  playerId: string
+  methodePaiement: string
+  referencePaiement: string
+}
+
+export async function createCommande({
+  offre,
+  jeu,
+  playerId,
+  methodePaiement,
+  referencePaiement
+}: Props) {
+  const supabase = await createClient()
+  const user = await getCurrentUser()
+  const { data: userData } = await supabase
+    .from('users')
+    .select('nom, email')
+    .eq('id', user?.id)
+    .single()
+
+  try {
+    // Créer la commande
+    const { data: commande, error: errCommande } = await supabase
+      .from('commandes')
+      .insert({
+        user_id: user?.id,
+        offre_id: offre.id,
+        player_id_jeu: playerId,
+        montant_ariary: offre.prix_ariary,
+        montant_usd: offre.prix_usd,
+        statut: 'en_attente_paiement'
+      })
+      .select()
+      .single()
+
+    if (errCommande || !commande) {
+      return {
+        success: false,
+        error: 'Erreur lors de la création de la commande',
+        data: null
+      }
+    }
+
+    // Enregistrer le paiement
+    const { error: errPaiement } = await supabase.from('paiements').insert({
+      commande_id: commande.id,
+      methode: methodePaiement,
+      reference_mvola: referencePaiement,
+      statut: 'en_attente',
+      montant: offre.prix_ariary
+    })
+
+    if (errPaiement) {
+      // Supprimer la commande si le paiement échoue
+      await supabase.from('commandes').delete().eq('id', commande.id)
+
+      return {
+        success: false,
+        error: "Erreur lors de l'enregistrement du paiement",
+        data: null
+      }
+    }
+
+    try {
+      await sendNouvelleCommandeEmail({
+        client: userData?.nom ?? '',
+        jeu: jeu.nom,
+        offre: offre.label,
+        montant: offre.prix_ariary
+      })
+    } catch (error) {
+      console.error('Erreur Resend :', error)
+    }
+
+    return {
+      success: true,
+      data: commande,
+      error: ''
+    }
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Une erreur inattendue est survenue'
+
+    return {
+      success: false,
+      error: errorMessage,
+      data: null
+    }
+  }
+}
 
 export async function getCommandeById() {
   const supabase = await createClient()
