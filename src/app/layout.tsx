@@ -5,31 +5,25 @@ import { AuthProvider } from '@/contexts/authContext'
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-inter'
 })
 
 const rajdhani = Rajdhani({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-rajdhani',
+  variable: '--font-rajdhani'
 })
 
 export const metadata: Metadata = {
-  title: 'Rabbit Shop - Recharge tes jetons',
-  description: 'Achetez vos diamonds, UC et jetons de jeux mobiles facilement à Madagascar',
+  title: 'Nova Loot - Recharge tes jetons',
+  description: 'Achetez vos diamonds, UC et jetons de jeux mobiles facilement à Madagascar'
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
       <body className={`${inter.variable} ${rajdhani.variable} font-sans antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   )

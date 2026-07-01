@@ -10,6 +10,7 @@ import CommandeModal from '@/components/commandes/commandeModal/commandeModal'
 import { logout } from '@/app/(auth)/action'
 
 import type { Jeu, Offre } from '@/types/catalogue'
+import { Sparkles } from 'lucide-react'
 
 interface Props {
   jeux: Jeu[]
@@ -28,16 +29,36 @@ export default function CatalogueClient({ jeux, user }: Props) {
       {/* Header */}
       <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Image
-              src="/signature.png"
-              alt="Rabbit Shop"
-              width={56}
-              height={56}
-              className="object-contain"
-            />
-
-            <h1 className="text-xl font-bold text-white">Rabbit Shop</h1>
+          <div className="flex items-center gap-2">
+            <Link href="/" className="shrink-0">
+              <img src="/NovaLooot.png" alt="NovaLoot" className="h-8 w-auto object-contain" />
+            </Link>
+            <h2 className="text-lg font-semibold">
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #1DA1FF, #3B82F6, #7C3AED)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Nova
+              </span>{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #FDE047, #F59E0B, #F97316)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Loot
+              </span>
+            </h2>
+            <div className="relative ml-2 flex items-center justify-center w-3 h-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -149,9 +170,10 @@ export default function CatalogueClient({ jeux, user }: Props) {
 
                       <button
                         onClick={() => setOffreSelectionnee(offre)}
-                        className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25"
+                        className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25"
                       >
-                        Commander
+                        <Sparkles className="w-4 h-4 animate-pulse transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+                        <span>Commander</span>
                       </button>
                     </div>
                   </div>

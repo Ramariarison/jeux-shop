@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/5 py-8">
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
-        <span className="text-slate-400 text-sm">Rabbit Shop © 2026</span>
+        <span className="text-slate-400 text-sm">Nova Loot © 2026</span>
         <div className="flex items-center gap-6">
           <a
             href="/catalogue"
@@ -10,14 +10,11 @@ export default function Footer() {
           >
             Catalogue
           </a>
-          <a
-            href="/login"
-            className="text-slate-500 hover:text-white text-sm transition-colors"
-          >
+          <a href="/login" className="text-slate-500 hover:text-white text-sm transition-colors">
             Connexion
           </a>
         </div>
       </div>
     </footer>
-  );
+  )
 }

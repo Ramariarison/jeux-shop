@@ -1,15 +1,12 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from 'lucide-react'
 
 export default function CtaSection() {
   return (
     <section className="max-w-6xl mx-auto px-6 py-20 text-center">
       <div className="bg-linear-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/20 rounded-3xl p-12">
-        <h2 className="text-3xl font-bold text-white mb-4">
-          Prêt à recharger tes jetons ?
-        </h2>
+        <h2 className="text-3xl font-bold text-white mb-4">Prêt à recharger tes jetons ?</h2>
         <p className="text-slate-400 mb-8 max-w-md mx-auto">
-          Rejoins des centaines de joueurs malgaches qui font confiance à Jeton
-          Games.
+          Rejoins des centaines de joueurs malgaches qui font confiance à Nova Loot.
         </p>
         <a
           href="/catalogue"
@@ -19,5 +16,5 @@ export default function CtaSection() {
         </a>
       </div>
     </section>
-  );
+  )
 }

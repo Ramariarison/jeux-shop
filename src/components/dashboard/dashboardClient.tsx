@@ -10,7 +10,6 @@ import { User } from '@supabase/supabase-js'
 
 type Props = {
   user: User | null
-  disconnect: () => Promise<void>
 }
 
 // constante UI
@@ -42,7 +41,7 @@ const statutConfig: Record<string, { label: string; color: string; dot: string }
   }
 }
 
-export default function DashboardClient({ user, disconnect }: Props) {
+export default function DashboardClient({ user }: Props) {
   const {
     commandes,
     loading,
@@ -69,7 +68,7 @@ export default function DashboardClient({ user, disconnect }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <SidebarClient active="commandes" user={user} logout={disconnect} />
+      <SidebarClient active="commandes" user={user} />
       <main className="ml-64 p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
