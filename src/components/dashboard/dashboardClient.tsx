@@ -12,7 +12,6 @@ type Props = {
   user: User | null
 }
 
-// constante UI
 const statutConfig: Record<string, { label: string; color: string; dot: string }> = {
   en_attente_paiement: {
     label: 'En attente',
@@ -61,15 +60,14 @@ export default function DashboardClient({ user }: Props) {
 
   const handleUpdateStatut = async (commandeId: string, newStatut: string) => {
     const success = await updateStatut(commandeId, newStatut)
-    if (success) {
-      setCommandeSelectionnee(null)
-    }
+    if (success) setCommandeSelectionnee(null)
   }
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
       <SidebarClient active="commandes" user={user} />
-      <main className="ml-64 p-8">
+
+      <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -84,11 +82,11 @@ export default function DashboardClient({ user }: Props) {
             className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-slate-400 hover:text-white text-sm transition-all disabled:opacity-50"
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-            {loading ? 'Chargement...' : 'Actualiser'}
+            <span className="hidden sm:inline">{loading ? 'Chargement...' : 'Actualiser'}</span>
           </button>
         </div>
 
-        {/* Affichage des erreurs */}
+        {/* Erreurs */}
         {error && (
           <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400">
             Erreur: {error}
@@ -96,20 +94,20 @@ export default function DashboardClient({ user }: Props) {
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {stats.map(({ label, value, color, bg, icon: Icon }) => (
-            <div key={label} className={`${bg} border border-white/5 rounded-2xl p-5`}>
+            <div key={label} className={`${bg} border border-white/5 rounded-2xl p-4 md:p-5`}>
               <div className="flex items-center justify-between mb-3">
-                <p className="text-slate-400 text-sm">{label}</p>
+                <p className="text-slate-400 text-xs md:text-sm">{label}</p>
                 <Icon size={16} className={color} />
               </div>
-              <p className={`text-3xl font-bold ${color}`}>{value}</p>
+              <p className={`text-2xl md:text-3xl font-bold ${color}`}>{value}</p>
             </div>
           ))}
         </div>
 
         {/* Filtres */}
-        <div className="flex items-center gap-2 mb-6 bg-white/5 border border-white/5 rounded-2xl p-1.5 w-fit">
+        <div className="flex items-center gap-2 mb-6 bg-white/5 border border-white/5 rounded-2xl p-1.5 overflow-x-auto max-w-fit">
           {['tous', ...Object.keys(statutConfig)].map((s) => (
             <button
               key={s}
@@ -125,123 +123,175 @@ export default function DashboardClient({ user }: Props) {
           ))}
         </div>
 
-        {/* Tableau */}
+        {/* Contenu */}
         {loading ? (
           <div className="text-center text-slate-500 py-20 animate-pulse">Chargement...</div>
         ) : commandesFiltrees.length === 0 ? (
           <div className="text-center text-slate-500 py-20">Aucune commande</div>
         ) : (
-          <div className="bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
-            {/* Header */}
-            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
-              <div className="col-span-2">Jeu / Offre</div>
-              <div className="col-span-2">Client</div>
-              <div className="col-span-2">ID Joueur</div>
-              <div className="col-span-2">Paiement</div>
-              <div className="col-span-1">Montant</div>
-              <div className="col-span-2">Statut</div>
-              <div className="col-span-1">Date</div>
+          <>
+            {/* Vue mobile : cards */}
+            <div className="md:hidden space-y-3">
+              {commandesFiltrees.map((commande) => (
+                <div
+                  key={commande.id}
+                  onClick={() => setCommandeSelectionnee(commande)}
+                  className="bg-[#13131f] border border-white/5 rounded-2xl p-4 cursor-pointer hover:bg-white/5 transition-all"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-white font-medium text-sm">{commande.offres?.jeux?.nom}</p>
+                      <p className="text-purple-400 text-xs">{commande.offres?.label}</p>
+                    </div>
+                    <div
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${statutConfig[commande.statut]?.color}`}
+                    >
+                      <div
+                        className={`w-1.5 h-1.5 rounded-full ${statutConfig[commande.statut]?.dot}`}
+                      />
+                      {statutConfig[commande.statut]?.label}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <p className="text-slate-500">Client</p>
+                      <p className="text-white">{commande.users?.nom}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Téléphone</p>
+                      <p className="text-white">{commande.users?.telephone}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">ID Joueur</p>
+                      <p className="text-white font-mono">{commande.player_id_jeu}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Montant</p>
+                      <p className="text-white font-semibold">
+                        {commande.montant_ariary.toLocaleString()} Ar
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Paiement</p>
+                      <p className="text-white uppercase">{commande.paiements?.[0]?.methode}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Référence</p>
+                      <p className="text-white font-mono truncate">
+                        {commande.paiements?.[0]?.reference_mvola}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
+                    {new Date(commande.created_at).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {/* Lignes du tableau */}
-            {commandesFiltrees.map((commande, index) => (
-              <div
-                key={commande.id}
-                onClick={() => setCommandeSelectionnee(commande)}
-                className={`grid grid-cols-12 gap-4 px-6 py-4 cursor-pointer transition-all hover:bg-white/5 ${
-                  index !== commandesFiltrees.length - 1 ? 'border-b border-white/5' : ''
-                }`}
-              >
-                {/* Jeu */}
-                <div className="col-span-2 flex items-center gap-3">
-                  <div className="min-w-0">
-                    <p className="text-white text-sm font-medium truncate">
-                      {commande.offres?.jeux?.nom}
-                    </p>
-                    <p className="text-purple-400 text-xs truncate">{commande.offres?.label}</p>
-                  </div>
-                </div>
-
-                {/* Client */}
-                <div className="col-span-2 flex items-center">
-                  <div>
-                    <p className="text-white text-sm truncate">{commande.users?.nom}</p>
-                    <p className="text-slate-500 text-xs">{commande.users?.telephone}</p>
-                  </div>
-                </div>
-
-                {/* ID Joueur */}
-                <div className="col-span-2 flex items-center">
-                  <div>
-                    <p className="text-white text-sm font-mono">{commande.player_id_jeu}</p>
-                    {commande.server_id && (
-                      <p className="text-slate-500 text-xs">Srv: {commande.server_id}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Paiement */}
-                <div className="col-span-2 flex items-center">
-                  <div>
-                    <p className="text-slate-300 text-xs font-medium uppercase">
-                      {commande.paiements?.[0]?.methode}
-                    </p>
-                    <p className="text-slate-500 text-xs font-mono">
-                      {commande.paiements?.[0]?.reference_mvola}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Montant */}
-                <div className="col-span-1 flex items-center">
-                  <div>
-                    <p className="text-white text-sm font-semibold">
-                      {commande.montant_ariary.toLocaleString()}
-                    </p>
-                    <p className="text-slate-500 text-xs">Ar</p>
-                  </div>
-                </div>
-
-                {/* Statut */}
-                <div className="col-span-2 flex items-center">
-                  <div
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${statutConfig[commande.statut]?.color}`}
-                  >
-                    <div
-                      className={`w-1.5 h-1.5 rounded-full ${statutConfig[commande.statut]?.dot}`}
-                    />
-                    <span className="hidden xl:block">{statutConfig[commande.statut]?.label}</span>
-                  </div>
-                </div>
-
-                {/* Date */}
-                <div className="col-span-1 flex items-center">
-                  <div>
-                    <p className="text-slate-400 text-xs">
-                      {new Date(commande.created_at).toLocaleDateString('fr-FR', {
-                        day: '2-digit',
-                        month: 'short'
-                      })}
-                    </p>
-                    <p className="text-slate-600 text-xs">
-                      {new Date(commande.created_at).toLocaleTimeString('fr-FR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </p>
-                  </div>
-                </div>
+            {/* Vue desktop : tableau */}
+            <div className="hidden md:block bg-[#13131f] border border-white/5 rounded-2xl overflow-hidden">
+              <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
+                <div className="col-span-2">Jeu / Offre</div>
+                <div className="col-span-2">Client</div>
+                <div className="col-span-2">ID Joueur</div>
+                <div className="col-span-2">Paiement</div>
+                <div className="col-span-1">Montant</div>
+                <div className="col-span-2">Statut</div>
+                <div className="col-span-1">Date</div>
               </div>
-            ))}
-          </div>
+              {commandesFiltrees.map((commande, index) => (
+                <div
+                  key={commande.id}
+                  onClick={() => setCommandeSelectionnee(commande)}
+                  className={`grid grid-cols-12 gap-4 px-6 py-4 cursor-pointer transition-all hover:bg-white/5 ${
+                    index !== commandesFiltrees.length - 1 ? 'border-b border-white/5' : ''
+                  }`}
+                >
+                  <div className="col-span-2 flex items-center">
+                    <div className="min-w-0">
+                      <p className="text-white text-sm font-medium truncate">
+                        {commande.offres?.jeux?.nom}
+                      </p>
+                      <p className="text-purple-400 text-xs truncate">{commande.offres?.label}</p>
+                    </div>
+                  </div>
+                  <div className="col-span-2 flex items-center">
+                    <div>
+                      <p className="text-white text-sm truncate">{commande.users?.nom}</p>
+                      <p className="text-slate-500 text-xs">{commande.users?.telephone}</p>
+                    </div>
+                  </div>
+                  <div className="col-span-2 flex items-center">
+                    <div>
+                      <p className="text-white text-sm font-mono">{commande.player_id_jeu}</p>
+                      {commande.server_id && (
+                        <p className="text-slate-500 text-xs">Srv: {commande.server_id}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-span-2 flex items-center">
+                    <div>
+                      <p className="text-slate-300 text-xs font-medium uppercase">
+                        {commande.paiements?.[0]?.methode}
+                      </p>
+                      <p className="text-slate-500 text-xs font-mono">
+                        {commande.paiements?.[0]?.reference_mvola}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="col-span-1 flex items-center">
+                    <div>
+                      <p className="text-white text-sm font-semibold">
+                        {commande.montant_ariary.toLocaleString()}
+                      </p>
+                      <p className="text-slate-500 text-xs">Ar</p>
+                    </div>
+                  </div>
+                  <div className="col-span-2 flex items-center">
+                    <div
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${statutConfig[commande.statut]?.color}`}
+                    >
+                      <div
+                        className={`w-1.5 h-1.5 rounded-full ${statutConfig[commande.statut]?.dot}`}
+                      />
+                      <span>{statutConfig[commande.statut]?.label}</span>
+                    </div>
+                  </div>
+                  <div className="col-span-1 flex items-center">
+                    <div>
+                      <p className="text-slate-400 text-xs">
+                        {new Date(commande.created_at).toLocaleDateString('fr-FR', {
+                          day: '2-digit',
+                          month: 'short'
+                        })}
+                      </p>
+                      <p className="text-slate-600 text-xs">
+                        {new Date(commande.created_at).toLocaleTimeString('fr-FR', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </main>
 
       {/* Modal détail */}
       {commandeSelectionnee && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#13131f] border border-white/10 rounded-2xl w-full max-w-lg shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
+          <div className="bg-[#13131f] border border-white/10 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 sticky top-0 bg-[#13131f]">
               <div>
                 <p className="text-white font-semibold">{commandeSelectionnee.offres?.jeux?.nom}</p>
                 <p className="text-purple-400 text-sm">{commandeSelectionnee.offres?.label}</p>
@@ -255,7 +305,6 @@ export default function DashboardClient({ user }: Props) {
             </div>
 
             <div className="p-6 space-y-5">
-              {/* Infos en grille */}
               <div className="grid grid-cols-2 gap-3">
                 {[
                   { icon: User2, label: 'Client', value: commandeSelectionnee.users?.nom },
@@ -287,7 +336,6 @@ export default function DashboardClient({ user }: Props) {
                 ))}
               </div>
 
-              {/* Montant */}
               <div className="bg-purple-600/10 border border-purple-500/20 rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs mb-0.5">Montant total</p>
@@ -305,7 +353,6 @@ export default function DashboardClient({ user }: Props) {
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="space-y-2">
                 {commandeSelectionnee.statut === 'en_attente_paiement' && (
                   <Button

@@ -33,7 +33,7 @@ export default function CatalogueClient({ jeux, user }: Props) {
             <Link href="/" className="shrink-0">
               <img src="/NovaLooot.png" alt="NovaLoot" className="h-8 w-auto object-contain" />
             </Link>
-            <h2 className="text-lg font-semibold">
+            <h2 className="hidden md:block text-lg font-semibold">
               <span
                 style={{
                   background: 'linear-gradient(to right, #1DA1FF, #3B82F6, #7C3AED)',
@@ -55,9 +55,12 @@ export default function CatalogueClient({ jeux, user }: Props) {
                 Loot
               </span>
             </h2>
-            <div className="relative ml-2 flex items-center justify-center w-3 h-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
+            <div className="flex items-center gap-1.5 ml-2 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full">
+              <div className="relative flex items-center justify-center w-2 h-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+              </div>
+              <span className="text-green-400 text-xs font-medium">Admin</span>
             </div>
           </div>
 

@@ -6,7 +6,6 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Image from 'next/image'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -79,10 +78,6 @@ export default function LoginPage() {
                 Loot
               </span>
             </h2>
-            <div className="relative ml-2 flex items-center justify-center w-3 h-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
-            </div>
           </div>
           <p className="text-slate-400 mt-1">Recharge tes jetons facilement</p>
         </div>

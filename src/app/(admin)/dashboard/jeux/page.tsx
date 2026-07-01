@@ -89,7 +89,7 @@ export default function JeuxPage() {
     <div className="min-h-screen bg-[#0f0f1a]">
       <SidebarClient active="jeux" user={user} />
 
-      <main className="ml-64 p-8">
+      <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Jeux</h1>
@@ -99,15 +99,16 @@ export default function JeuxPage() {
             onClick={openCreate}
             className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl"
           >
-            <Plus size={16} />
-            Ajouter un jeu
+            <Plus size={16} className="mr-1 md:mr-2" />
+            <span className="hidden sm:inline">Ajouter un jeu</span>
+            <span className="sm:hidden">Ajouter</span>
           </Button>
         </div>
 
         {loading ? (
           <div className="text-center text-slate-500 py-20 animate-pulse">Chargement...</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {jeux.map((jeu) => (
               <div key={jeu.id} className="bg-white/5 border border-white/5 rounded-2xl p-5">
                 <div className="flex items-center justify-between mb-4">
