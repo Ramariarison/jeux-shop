@@ -6,7 +6,7 @@ const reasons = [
     color: 'text-yellow-400',
     bg: 'bg-yellow-500/10 border-yellow-500/20',
     title: 'Livraison rapide',
-    desc: 'Tes jetons sont livrés en 15 minutes à 30 minutes maximum après confirmation du paiement.'
+    desc: 'Tes jetons sont livrés en 5 minutes à 10 minutes maximum après confirmation du paiement.'
   },
   {
     icon: Shield,

@@ -1,30 +1,28 @@
 const faqs = [
   {
-    q: "Combien de temps prend la livraison ?",
-    a: "En général entre 15 minutes et 30 minutes après confirmation de votre paiement. En dehors des heures de pointe, c'est souvent plus rapide.",
+    q: 'Combien de temps prend la livraison ?',
+    a: "En général entre 5 minutes et 10 minutes après confirmation de votre paiement. En dehors des heures de pointe, c'est souvent plus rapide."
   },
   {
-    q: "Quels moyens de paiement acceptez-vous ?",
-    a: "Nous acceptons Mvola (Telma), Airtel Money et Orange Money. Tous les paiements sont 100% locaux.",
+    q: 'Quels moyens de paiement acceptez-vous ?',
+    a: 'Nous acceptons Mvola (Telma), Airtel Money et Orange Money. Tous les paiements sont 100% locaux.'
   },
   {
-    q: "Comment trouver mon ID joueur ?",
-    a: "Dans la plupart des jeux, votre ID se trouve dans votre profil ou dans les paramètres du jeu. Pour Mobile Legends, vous avez aussi besoin de votre ID serveur.",
+    q: 'Comment trouver mon ID joueur ?',
+    a: 'Dans la plupart des jeux, votre ID se trouve dans votre profil ou dans les paramètres du jeu. Pour Mobile Legends, vous avez aussi besoin de votre ID serveur.'
   },
   {
     q: "Que se passe-t-il si je n'ai pas reçu mes jetons ?",
-    a: "Contactez-nous directement via WhatsApp ou Facebook. Nous traitons tous les litiges rapidement et vous serez remboursé si le problème vient de notre côté.",
-  },
-];
+    a: 'Contactez-nous directement via WhatsApp ou Facebook. Nous traitons tous les litiges rapidement et vous serez remboursé si le problème vient de notre côté.'
+  }
+]
 
 export default function FaqSection() {
   return (
     <section id="faq" className="bg-white/2 border-y border-white/5 py-20">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-3">
-            Questions fréquentes
-          </h2>
+          <h2 className="text-3xl font-bold text-white mb-3">Questions fréquentes</h2>
         </div>
 
         <div className="space-y-3">
@@ -47,5 +45,5 @@ export default function FaqSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }

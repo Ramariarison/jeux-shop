@@ -10,7 +10,7 @@ import CommandeModal from '@/components/commandes/commandeModal/commandeModal'
 import { logout } from '@/app/(auth)/action'
 
 import type { Jeu, Offre } from '@/types/catalogue'
-import { Sparkles } from 'lucide-react'
+import { LogIn, LogOut, Sparkles } from 'lucide-react'
 
 interface Props {
   jeux: Jeu[]
@@ -75,17 +75,22 @@ export default function CatalogueClient({ jeux, user }: Props) {
                 </Link>
 
                 <form action={logout}>
-                  <button className="text-sm text-red-400 hover:text-red-300 transition-colors">
-                    Déconnexion
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1 text-sm text-red-400 hover:text-red-300 transition-colors"
+                  >
+                    <LogOut size={14} />
+                    <span className="hidden md:block">Déconnexion</span>
                   </button>
                 </form>
               </>
             ) : (
               <Link
                 href="/login"
-                className="text-sm text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors"
               >
-                Connexion
+                <LogIn size={16} />
+                <span className="hidden md:block">Connexion</span>
               </Link>
             )}
           </div>
