@@ -21,18 +21,31 @@ export default function SidebarClient({ active, user }: Props) {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#13131f] border-r border-white/5 z-20 flex flex-col">
       <div className="p-3 border-b border-white/5">
-        <div className="flex items-center">
-          <div className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden">
-            <Image
-              src="/signature.png"
-              alt="Rabbit Shop"
-              width={56}
-              height={56}
-              className="object-contain"
-            />
-          </div>
+        <div className="flex items-center gap-3">
+          <img src="/NovaLooot.png" alt="NovaLoot" className="h-8 w-auto object-contain" />
           <div>
-            <p className="text-white font-semibold text-sm">Rabbit Shop</p>
+            <h2 className="text-lg font-semibold">
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #1DA1FF, #3B82F6, #7C3AED)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Nova
+              </span>{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #FDE047, #F59E0B, #F97316)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Loot
+              </span>
+            </h2>
             <p className="text-slate-500 text-xs">Administration</p>
           </div>
         </div>

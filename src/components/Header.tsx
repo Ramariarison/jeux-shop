@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, LogIn, UserPlus, Wifi } from 'lucide-react'
 import { User } from '@supabase/supabase-js'
 
 interface Props {
@@ -11,50 +12,79 @@ interface Props {
 export default function Header({ user }: Props) {
   return (
     <header className="border-b border-white/5 backdrop-blur-md bg-[#0f0f1a]/80 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center">
-          <Image
-            src="/signature.png"
-            alt="Rabbit Shop"
-            width={56}
-            height={56}
-            className="object-contain"
-          />
-          <span className="text-white font-bold text-lg">Rabbit Shop</span>
+      <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="shrink-0">
+            <img src="/NovaLooot.png" alt="NovaLoot" className="h-8 w-auto object-contain" />
+          </Link>
+          <h2 className="text-lg font-semibold">
+            <span
+              style={{
+                background: 'linear-gradient(to right, #1DA1FF, #3B82F6, #7C3AED)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Nova
+            </span>{' '}
+            <span
+              style={{
+                background: 'linear-gradient(to right, #FDE047, #F59E0B, #F97316)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Loot
+            </span>
+          </h2>
+          <div className="relative ml-2 flex items-center justify-center w-3 h-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
+          </div>
         </div>
+
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#jeux" className="text-slate-400 hover:text-white text-sm transition-colors">
+          <Link href="#jeux" className="text-slate-400 hover:text-white text-sm transition-colors">
             Jeux
-          </a>
-          <a href="#comment" className="text-slate-400 hover:text-white text-sm transition-colors">
+          </Link>
+          <Link
+            href="#comment"
+            className="text-slate-400 hover:text-white text-sm transition-colors"
+          >
             Comment ça marche
-          </a>
-          <a href="#faq" className="text-slate-400 hover:text-white text-sm transition-colors">
+          </Link>
+          <Link href="#faq" className="text-slate-400 hover:text-white text-sm transition-colors">
             FAQ
-          </a>
+          </Link>
         </nav>
+
         <div className="flex items-center gap-3">
           {user ? (
-            <a
+            <Link
               href="/catalogue"
-              className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all"
+              className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200"
             >
               Catalogue <ArrowRight size={14} />
-            </a>
+            </Link>
           ) : (
             <>
-              <a
+              <Link
                 href="/login"
-                className="text-slate-400 hover:text-white text-sm transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors"
               >
-                Connexion
-              </a>
-              <a
+                <LogIn size={16} />
+                <span>Connexion</span>
+              </Link>
+
+              <Link
                 href="/register"
-                className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all"
+                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-xl transition-all duration-200"
               >
-                S&apos;inscrire
-              </a>
+                <UserPlus size={16} />
+                <span>S&apos;inscrire</span>
+              </Link>
             </>
           )}
         </div>

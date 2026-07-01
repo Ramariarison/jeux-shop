@@ -1,4 +1,4 @@
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap } from 'lucide-react'
 
 export default function HeroSection() {
   return (
@@ -11,7 +11,7 @@ export default function HeroSection() {
       <div className="relative max-w-6xl mx-auto px-6 py-24 text-center">
         <div className="inline-flex items-center gap-2 bg-purple-600/15 border border-purple-500/25 text-purple-300 text-xs px-4 py-2 rounded-full mb-6">
           <Zap size={12} />
-          Livraison rapide — 15 à 30 min
+          Livraison rapide
         </div>
 
         <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
@@ -22,8 +22,8 @@ export default function HeroSection() {
         </h1>
 
         <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-          Achète tes diamonds, UC et jetons pour tes jeux mobiles préférés.
-          Paiement via Mvola, Airtel Money ou Orange Money.
+          Achète tes diamonds, UC et jetons pour tes jeux mobiles préférés. Paiement via Mvola,
+          Airtel Money ou Orange Money.
         </p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -42,5 +42,5 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }

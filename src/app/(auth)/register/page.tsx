@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -37,23 +38,42 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-
       <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
       <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
 
       <div className="relative w-full max-w-md">
-
         {/* Logo / Titre */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-1">
-            <Image
-              src="/signature.png"
-              alt="Rabbit Shop"
-              width={74}
-              height={74}
-              className="object-contain"
-            />
-            <h1 className="text-3xl font-bold text-white">Rabbit Shop</h1>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Link href="/" className="shrink-0">
+              <img src="/NovaLooot.png" alt="NovaLoot" className="h-8 w-auto object-contain" />
+            </Link>
+            <h2 className="text-lg font-semibold">
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #1DA1FF, #3B82F6, #7C3AED)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Nova
+              </span>{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #FDE047, #F59E0B, #F97316)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                Loot
+              </span>
+            </h2>
+            <div className="relative ml-2 flex items-center justify-center w-3 h-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
+            </div>
           </div>
           <p className="text-slate-400 mt-1">Recharge tes jetons facilement</p>
         </div>
@@ -118,7 +138,10 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-slate-400 mt-6">
             Déjà un compte ?{' '}
-            <a href="/login" className="text-purple-400 hover:text-purple-300 font-medium hover:underline">
+            <a
+              href="/login"
+              className="text-purple-400 hover:text-purple-300 font-medium hover:underline"
+            >
               Se connecter
             </a>
           </p>
