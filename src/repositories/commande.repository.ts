@@ -18,6 +18,29 @@ export async function findAllCommande(supabase: SupabaseClient) {
     .order('created_at', { ascending: false })
 }
 
+export async function findCommandeComplete(supabase: SupabaseClient, commandeId: string) {
+  return supabase
+    .from('commandes')
+    .select(
+      `
+      player_id_jeu,
+      montant_ariary,
+      users (
+        nom,
+        email
+      ),
+      offres (
+        label,
+        jeux (
+          nom
+        )
+      )
+    `
+    )
+    .eq('id', commandeId)
+    .single()
+}
+
 export async function updateCommandeStatut(
   supabase: SupabaseClient,
   commandeId: string,

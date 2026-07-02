@@ -12,64 +12,87 @@ export function useCommandes() {
   // Charger les données
   async function loadData() {
     try {
-        const data = await getAllCommande()
-        setCommandes(data || [])
+      const data = await getAllCommande()
+      setCommandes(data || [])
     } catch (err) {
-        console.error("Erreur:", err)
-        setError(err instanceof Error ? err.message : 'Erreur de chargement')
+      console.error('Erreur:', err)
+      setError(err instanceof Error ? err.message : 'Erreur de chargement')
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
   }
-  
+
   // Mettre à jour le statut
   async function updateStatut(commandeId: string, newStatut: string) {
     setActionLoading(true)
     setError(null)
 
     try {
-        const updatePaiement = newStatut === 'paiement_recu'
+      const updatePaiement = newStatut === 'paiement_recu'
 
-        await updateCommandeStatutComplet(
-        commandeId,
-        newStatut,
-        updatePaiement
-        )
+      await updateCommandeStatutComplet(commandeId, newStatut, updatePaiement)
 
-        await loadData()
+      await loadData()
 
-        return true
+      return true
     } catch (err) {
-        console.error("Erreur lors de la mise à jour:", err)
-        setError(err instanceof Error ? err.message : 'Erreur de mise à jour')
-        return false
+      console.error('Erreur lors de la mise à jour:', err)
+      setError(err instanceof Error ? err.message : 'Erreur de mise à jour')
+      return false
     } finally {
-        setActionLoading(false)
+      setActionLoading(false)
     }
   }
 
   // Chargement initial
   useEffect(() => {
     async function init() {
-        await loadData()
+      await loadData()
     }
 
     init()
   }, [])
 
   // Filtrer les commandes par statut
-  const getCommandesByStatut = useCallback((statut: string) => {
-    if (statut === 'tous') return commandes
-    return commandes.filter(c => c.statut === statut)
-  }, [commandes])
+  const getCommandesByStatut = useCallback(
+    (statut: string) => {
+      if (statut === 'tous') return commandes
+      return commandes.filter((c) => c.statut === statut)
+    },
+    [commandes]
+  )
 
   // Calculer les statistiques
   const getStats = useCallback(() => {
     return [
-      { label: 'Total', value: commandes.length, color: 'text-white', bg: 'bg-white/10', icon: TrendingUp },
-      { label: 'En attente', value: commandes.filter(c => c.statut === 'en_attente_paiement').length, color: 'text-amber-300', bg: 'bg-amber-500/10', icon: Clock },
-      { label: 'Paiement reçu', value: commandes.filter(c => c.statut === 'paiement_recu').length, color: 'text-blue-300', bg: 'bg-blue-500/10', icon: CreditCard },
-      { label: 'Livrées', value: commandes.filter(c => c.statut === 'livree').length, color: 'text-emerald-300', bg: 'bg-emerald-500/10', icon: CheckCircle },
+      {
+        label: 'Total',
+        value: commandes.length,
+        color: 'text-white',
+        bg: 'bg-white/10',
+        icon: TrendingUp
+      },
+      {
+        label: 'En attente',
+        value: commandes.filter((c) => c.statut === 'en_attente_paiement').length,
+        color: 'text-amber-300',
+        bg: 'bg-amber-500/10',
+        icon: Clock
+      },
+      {
+        label: 'Paiement reçu',
+        value: commandes.filter((c) => c.statut === 'paiement_recu').length,
+        color: 'text-blue-300',
+        bg: 'bg-blue-500/10',
+        icon: CreditCard
+      },
+      {
+        label: 'Livrées',
+        value: commandes.filter((c) => c.statut === 'livree').length,
+        color: 'text-emerald-300',
+        bg: 'bg-emerald-500/10',
+        icon: CheckCircle
+      }
     ]
   }, [commandes])
 
@@ -79,14 +102,14 @@ export function useCommandes() {
     loading,
     error,
     actionLoading,
-    
+
     // Actions
     loadData,
     updateStatut,
     getCommandesByStatut,
     getStats,
-    
+
     // Utilitaire
-    reload: loadData,
+    reload: loadData
   }
 }

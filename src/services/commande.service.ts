@@ -6,9 +6,15 @@ import {
   findCommande,
   findAllCommande,
   updateCommandeStatut,
-  updatePaiementStatut
+  updatePaiementStatut,
+  findCommandeComplete
 } from '@/repositories/commande.repository'
-import { sendNouvelleCommandeEmail } from './email/email.service'
+import {
+  sendCommandeRefuseeEmail,
+  sendCommandeValideeEmail,
+  sendNouvelleCommandeEmail
+} from './email/email.service'
+import { sendAdminNotification } from '@/services/notification/ntfy.service'
 
 type Offre = {
   id: string
@@ -101,6 +107,17 @@ export async function createCommande({
       console.error('Erreur Resend :', error)
     }
 
+    try {
+      await sendAdminNotification({
+        client: userData?.nom ?? '',
+        jeu: jeu.nom,
+        offre: offre.label,
+        montant: offre.prix_ariary
+      })
+    } catch (error) {
+      console.error('Erreur ntfy :', error)
+    }
+
     return {
       success: true,
       data: commande,
@@ -145,7 +162,7 @@ export async function updateCommandeStatutComplet(
 ) {
   const supabase = await createClient()
 
-  // Maj status commande
+  // Mise à jour du statut
   const { data: commandeData, error: commandeError } = await updateCommandeStatut(
     supabase,
     commandeId,
@@ -154,17 +171,48 @@ export async function updateCommandeStatutComplet(
 
   if (commandeError) throw commandeError
 
-  // Maj status paiement
+  // Mise à jour du paiement
   if (updatePaiement) {
-    const paiementStatut = 'confirme'
-    const { error: paiementError } = await updatePaiementStatut(
-      supabase,
-      commandeId,
-      paiementStatut
-    )
+    const { error: paiementError } = await updatePaiementStatut(supabase, commandeId, 'confirme')
 
     if (paiementError) throw paiementError
-
-    return commandeData
   }
+
+  // Récupérer toutes les informations nécessaires
+  const { data: commande, error } = await findCommandeComplete(supabase, commandeId)
+
+  if (error) throw error
+
+  const utilisateur = commande?.users.at(0)
+  const offre = commande?.offres.at(0)
+  const jeu = offre?.jeux.at(0)
+
+  if (!utilisateur || !offre || !jeu) {
+    throw new Error('Informations de la commande incomplètes.')
+  }
+
+  // Envoi du mail
+  if (newStatut === 'paiement_recu') {
+    await sendCommandeValideeEmail({
+      email: utilisateur.email,
+      client: utilisateur.nom,
+      jeu: jeu.nom,
+      offre: offre.label,
+      montant: commande.montant_ariary,
+      playerId: commande.player_id_jeu
+    })
+  }
+
+  if (newStatut === 'annulee') {
+    await sendCommandeRefuseeEmail({
+      email: utilisateur.email,
+      client: utilisateur.nom,
+      jeu: jeu.nom,
+      offre: offre.label,
+      montant: commande.montant_ariary,
+      playerId: commande.player_id_jeu
+    })
+  }
+
+  return commandeData
 }
