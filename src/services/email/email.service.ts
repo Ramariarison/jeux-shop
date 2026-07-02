@@ -20,24 +20,46 @@ export async function sendNouvelleCommandeEmail(data: {
   })
 }
 
-export async function sendCommandeValideeEmail(data: { email: string; client: string }) {
+export async function sendCommandeValideeEmail(data: {
+  email: string
+  client: string
+  jeu: string
+  offre: string
+  montant: number
+  playerId: string
+}) {
   return resend.emails.send({
     from: FROM,
     to: data.email,
     subject: '✅ Votre commande a été validée',
     html: commandeValideeTemplate({
-      client: data.client
+      client: data.client,
+      jeu: data.jeu,
+      offre: data.offre,
+      montant: data.montant,
+      playerId: data.playerId
     })
   })
 }
 
-export async function sendCommandeRefuseeEmail(data: { email: string; client: string }) {
+export async function sendCommandeRefuseeEmail(data: {
+  email: string
+  client: string
+  jeu: string
+  offre: string
+  montant: number
+  playerId: string
+}) {
   return resend.emails.send({
     from: FROM,
     to: data.email,
     subject: '❌ Votre commande a été refusée',
     html: commandeRefuseeTemplate({
-      client: data.client
+      client: data.client,
+      jeu: data.jeu,
+      offre: data.offre,
+      montant: data.montant,
+      playerId: data.playerId
     })
   })
 }

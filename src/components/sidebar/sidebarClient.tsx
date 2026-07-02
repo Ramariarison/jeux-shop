@@ -2,12 +2,16 @@
 
 import { useState } from 'react'
 import { GamepadIcon, Package, Users, LogOut, Menu, X } from 'lucide-react'
-import { User } from '@supabase/supabase-js'
 import { logout } from '@/app/(auth)/action'
+
+type User = {
+  nom: string
+  email: string
+}
 
 type Props = {
   active: 'commandes' | 'jeux' | 'offres' | 'utilisateurs'
-  user?: User | null
+  user: User | null
 }
 
 const menu = [

@@ -6,10 +6,14 @@ import { CheckCircle, Clock, CreditCard, Hash, RefreshCw, User2, XCircle } from 
 import { useCommandes } from '@/hooks/useCommandes'
 import { Commande } from '@/types/commande'
 import SidebarClient from '@/components/sidebar/sidebarClient'
-import { User } from '@supabase/supabase-js'
+
+type User = {
+  nom: string
+  email: string
+}
 
 type Props = {
-  user: User | null
+  userData: User | null
 }
 
 const statutConfig: Record<string, { label: string; color: string; dot: string }> = {
@@ -40,7 +44,7 @@ const statutConfig: Record<string, { label: string; color: string; dot: string }
   }
 }
 
-export default function DashboardClient({ user }: Props) {
+export default function DashboardClient({ userData }: Props) {
   const {
     commandes,
     loading,
@@ -65,7 +69,7 @@ export default function DashboardClient({ user }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <SidebarClient active="commandes" user={user} />
+      <SidebarClient active="commandes" user={userData} />
 
       <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         {/* Header */}
