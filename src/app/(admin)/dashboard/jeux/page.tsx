@@ -31,6 +31,23 @@ export default function JeuxPage() {
   const [actif, setActif] = useState(true)
   const [saving, setSaving] = useState(false)
 
+  const [userData, setUserData] = useState<{
+    nom: string
+    email: string
+  } | null>(null)
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (!user) return
+
+      const { data } = await supabase.from('users').select('nom, email').eq('id', user.id).single()
+
+      setUserData(data)
+    }
+
+    fetchUser()
+  }, [user])
+
   async function fetchJeux() {
     setLoading(true)
     const { data } = await supabase.from('jeux').select('*').order('nom')
@@ -87,7 +104,7 @@ export default function JeuxPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <SidebarClient active="jeux" user={user} />
+      <SidebarClient active="jeux" user={userData} />
 
       <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         <div className="flex items-center justify-between mb-8">

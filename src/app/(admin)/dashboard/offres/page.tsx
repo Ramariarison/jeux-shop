@@ -58,6 +58,23 @@ export default function OffresPage() {
     setLoading(false)
   }
 
+  const [userData, setUserData] = useState<{
+    nom: string
+    email: string
+  } | null>(null)
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (!user) return
+
+      const { data } = await supabase.from('users').select('nom, email').eq('id', user.id).single()
+
+      setUserData(data)
+    }
+
+    fetchUser()
+  }, [user])
+
   useEffect(() => {
     async function init() {
       await fetchData()
@@ -120,7 +137,7 @@ export default function OffresPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      <SidebarClient active="offres" user={user} />
+      <SidebarClient active="offres" user={userData} />
 
       <main className="md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
         <div className="flex items-center justify-between mb-8">
