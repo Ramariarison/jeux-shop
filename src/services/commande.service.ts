@@ -168,50 +168,55 @@ export async function updateCommandeStatutComplet(
     commandeId,
     newStatut
   )
-
   if (commandeError) throw commandeError
 
   // Mise à jour du paiement
   if (updatePaiement) {
     const { error: paiementError } = await updatePaiementStatut(supabase, commandeId, 'confirme')
-
     if (paiementError) throw paiementError
   }
 
-  // Récupérer toutes les informations nécessaires
+  // Récupération des infos complètes
   const { data: commande, error } = await findCommandeComplete(supabase, commandeId)
-
-  if (error) throw error
-
-  const utilisateur = commande?.users.at(0)
-  const offre = commande?.offres.at(0)
-  const jeu = offre?.jeux.at(0)
-
-  if (!utilisateur || !offre || !jeu) {
-    throw new Error('Informations de la commande incomplètes.')
+  if (error) {
+    console.error('Erreur findCommandeComplete:', error)
+    throw error
   }
 
-  // Envoi du mail
+  // Extraction robuste des relations
+  const user = Array.isArray(commande.users) ? commande.users[0] : commande.users
+  const offre = Array.isArray(commande.offres) ? commande.offres[0] : commande.offres
+  const jeu = Array.isArray(offre.jeux) ? offre.jeux[0] : offre.jeux
+
+  // Envoi des emails
   if (newStatut === 'paiement_recu') {
-    await sendCommandeValideeEmail({
-      email: utilisateur.email,
-      client: utilisateur.nom,
-      jeu: jeu.nom,
-      offre: offre.label,
-      montant: commande.montant_ariary,
-      playerId: commande.player_id_jeu
-    })
+    try {
+      await sendCommandeValideeEmail({
+        email: user?.email,
+        client: user?.nom,
+        jeu: jeu?.nom,
+        offre: offre?.label,
+        montant: commande?.montant_ariary,
+        playerId: commande?.player_id_jeu
+      })
+    } catch (emailError) {
+      console.error('Erreur envoi email validation :', emailError)
+    }
   }
 
   if (newStatut === 'annulee') {
-    await sendCommandeRefuseeEmail({
-      email: utilisateur.email,
-      client: utilisateur.nom,
-      jeu: jeu.nom,
-      offre: offre.label,
-      montant: commande.montant_ariary,
-      playerId: commande.player_id_jeu
-    })
+    try {
+      await sendCommandeRefuseeEmail({
+        email: user?.email,
+        client: user?.nom,
+        jeu: jeu?.nom,
+        offre: offre?.label,
+        montant: commande?.montant_ariary,
+        playerId: commande?.player_id_jeu
+      })
+    } catch (emailError) {
+      console.error('Erreur envoi email refus :', emailError)
+    }
   }
 
   return commandeData
