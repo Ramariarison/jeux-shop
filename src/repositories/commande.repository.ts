@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function findCommande(supabase: any, user_id: any) {
-  return supabase
+  return await supabase
     .from('commandes')
     .select(`*, offres(label, jeux(nom)), paiements(methode, reference_mvola, statut)`)
     .eq('user_id', user_id)
@@ -10,7 +10,7 @@ export async function findCommande(supabase: any, user_id: any) {
 }
 
 export async function findAllCommande(supabase: SupabaseClient) {
-  return supabase
+  return await supabase
     .from('commandes')
     .select(
       `*, users(nom, email, telephone), offres(label, jeux(nom)), paiements(id, methode, reference_mvola, statut, montant)`
@@ -19,7 +19,7 @@ export async function findAllCommande(supabase: SupabaseClient) {
 }
 
 export async function findCommandeComplete(supabase: SupabaseClient, commandeId: string) {
-  return supabase
+  return await supabase
     .from('commandes')
     .select(
       `
