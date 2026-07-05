@@ -4,7 +4,6 @@ type Props = {
   offre: string
   montant: number
   playerId: string
-  appUrl?: string
   supportEmail?: string
 }
 
@@ -14,7 +13,6 @@ export function commandeValideeTemplate({
   offre,
   montant,
   playerId,
-  appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://novalootmada.vercel.app',
   supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'vintsy093@gmail.com'
 }: Props) {
   return `
@@ -103,27 +101,6 @@ export function commandeValideeTemplate({
                     Besoin d'aide ? Contactez-nous : <a href="mailto:${supportEmail}" style="color:#6d28d9;">${supportEmail}</a>
                   </p>
                   
-                </td>
-              </tr>
-              
-              <!-- Footer -->
-              <tr>
-                <td style="padding-top:20px;border-top:2px solid #f3f4f6;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td align="center" style="color:#6b7280;font-size:13px;">
-                        <p style="margin:0 0 8px 0;">
-                          Cet email a été envoyé automatiquement par NovaLoot.
-                        </p>
-                        <p style="margin:0;">
-                          <a href="${appUrl}" style="color:#6d28d9;text-decoration:underline;">${appUrl}</a>
-                        </p>
-                        <p style="margin:8px 0 0 0;font-size:11px;">
-                          <a href="${appUrl}/unsubscribe?email={{Email}}" style="color:#9ca3af;text-decoration:underline;">Se désabonner</a>
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
                 </td>
               </tr>
               
